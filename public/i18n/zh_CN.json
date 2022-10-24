@@ -1,0 +1,9 @@
+{
+	"topbar": {
+		"welcomeFormat": "欢迎回来，{0}",
+		"center": "用户中心",
+		"admin": "后台管理",
+		"login": "登录",
+		"register": "注册"
+	}
+}
