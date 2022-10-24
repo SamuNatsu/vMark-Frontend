@@ -1,3 +1,5 @@
 #!/bin/bash
-npm run serve
+npm install
+npm run lint
+npm run dev
 
