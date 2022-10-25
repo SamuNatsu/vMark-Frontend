@@ -5,5 +5,10 @@
 		"admin": "Admin center",
 		"login": "Login",
 		"register": "Register"
+	},
+	"header": {
+		"searchbox": {
+			"button": "Search"
+		}
 	}
 }

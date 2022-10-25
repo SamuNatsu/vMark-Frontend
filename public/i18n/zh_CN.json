@@ -5,5 +5,11 @@
 		"admin": "后台管理",
 		"login": "登录",
 		"register": "注册"
+	},
+	"header": {
+		"searchbox": {
+			"input": "搜点什么",
+			"button": "搜索"
+		}
 	}
 }

@@ -1,14 +1,17 @@
 <script setup>
 import { storeToRefs } from "pinia";
-import { useI18N } from "../stores/I18N.js";
+
+// Stores
+import { useI18NStore } from "../stores/I18N.js";
 import { useUser } from "../stores/User.js";
 
 // Components
 import Dropdown from "./Dropdown.vue";
 
 // I18N store
-const I18N = useI18N();
-const { index, current, lang } = storeToRefs(I18N);
+const I18N = useI18NStore();
+await I18N.init();
+const { index } = storeToRefs(I18N);
 
 // User store
 const User = useUser();
@@ -28,18 +31,28 @@ const dropdownAction = (item, id)=>{
 
 <template>
 	<div class="topbar">
-		<div class="topbar__welcome" v-if="login">{{ lang.topbar.welcomeFormat.format(account) }}</div>
+		<div class="topbar__welcome" v-if="login">
+			{{ I18N.getLang("topbar.welcomeFormat").format(account) }}
+		</div>
 		<div class="topbar__vr" v-if="login"></div>
-		<div class="topbar__btn" v-if="login"><RouterLink to="user">{{ lang.topbar.center }}</RouterLink></div>
-		<div class="topbar__btn" v-if="login"><RouterLink to="admin">{{ lang.topbar.admin }}</RouterLink></div>
+		<div class="topbar__btn" v-if="login">
+			<RouterLink to="user">{{ I18N.getLang("topbar.center") }}</RouterLink>
+		</div>
+		<div class="topbar__btn" v-if="login">
+			<RouterLink to="admin">{{ I18N.getLang("topbar.admin") }}</RouterLink>
+		</div>
 
-		<div class="topbar__btn" v-if="!login"><RouterLink to="login">{{ lang.topbar.login }}</RouterLink></div>
-		<div class="topbar__btn" v-if="!login"><RouterLink to="register">{{ lang.topbar.register }}</RouterLink></div>
+		<div class="topbar__btn" v-if="!login">
+			<RouterLink to="login">{{ I18N.getLang("topbar.login") }}</RouterLink>
+		</div>
+		<div class="topbar__btn" v-if="!login">
+			<RouterLink to="register">{{ I18N.getLang("topbar.register") }}</RouterLink>
+		</div>
 
 		<div class="topbar__vr"></div>
 		<Dropdown 
-			:name="index[current]" 
-			:list="Object.values(index)" 
+			:name="I18N.getCurrentName"
+			:list="I18N.getLanguageNames"
 			:style="dropdownStyle" 
 			:action="dropdownAction"
 		/>
@@ -58,6 +71,7 @@ const dropdownAction = (item, id)=>{
 		display: flex;
 		font-size: .7em;
 		justify-content: flex-end;
+		position: relative;
 	}
 	.topbar>div {
 		margin: 10px 20px;
