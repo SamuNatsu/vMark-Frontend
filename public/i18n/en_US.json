@@ -1,0 +1,9 @@
+{
+	"topbar": {
+		"welcomeFormat": "Welcome back, {0}",
+		"center": "User center",
+		"admin": "Admin center",
+		"login": "Login",
+		"register": "Register"
+	}
+}
