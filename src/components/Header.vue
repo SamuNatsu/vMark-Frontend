@@ -19,6 +19,8 @@ const I18N = useI18NStore();
 // Search click
 const searchText = ref("");
 const searchClick = ()=>{
+    if (searchText === "")
+        return;
     router.push({
         name: "search",
         query: {

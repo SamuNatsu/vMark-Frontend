@@ -2,6 +2,11 @@ import { createRouter, createWebHistory } from "vue-router";
 
 // View imports
 import IndexView from "./views/IndexView.vue";
+import SearchView from "./views/SearchView.vue";
+import LoginView from "./views/LoginView.vue";
+import RegisterView from "./views/RegisterView.vue";
+import UserView from "./views/UserView.vue";
+import AdminView from "./views/AdminView.vue";
 
 // Create router
 const router = createRouter({
@@ -11,7 +16,12 @@ const router = createRouter({
 			path: "/",
 			name: "index",
 			component: IndexView
-		}/*,
+		},
+        {
+            path: "/search",
+            name: "search",
+            component: SearchView
+        },
 		{
 			path: "/login",
             name: "login",
@@ -31,7 +41,18 @@ const router = createRouter({
             path: "/admin",
             name: "admin",
             component: AdminView
-        }*/
+        }/*
+        {
+            path: "item",
+            name: "item"
+            component: ItemView
+        },
+        {
+            path: "/cart",
+            name: "cart",
+            component: CartView
+        }
+        */
 	]
 });
 

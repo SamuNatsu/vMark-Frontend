@@ -7,7 +7,7 @@ import { useI18NStore } from "../stores/I18N.js";
 import { useUser } from "../stores/User.js";
 
 // Components
-import Dropdown from "./Dropdown.vue";
+import Dropdown from "./independ/Dropdown.vue";
 
 // I18N store
 const I18N = useI18NStore();
@@ -19,20 +19,17 @@ const User = useUser();
 const { login, account } = storeToRefs(User);
 
 // Language dropdown menu properties
-const dropdownButton = computed(()=> {
-	let imgEl = "<img src=\"/svg/language.svg\" style=\"margin-right: 10px; height:calc(.7em + 20px)\"/>";
-	let textEl = "<div>" + I18N.getCurrentName + "</div>";
+const dropdownButton = computed(()=>{
+	let imgEl = '<img src="/svg/language.svg" style="margin-right: 10px; height:calc(.7em + 20px)"/>';
+	let textEl = `<div>${I18N.getCurrentName}</div>`;
 	return imgEl + textEl;
 });
-const dropdownStyle = {
-	container: "margin: 0; min-width: 100px; text-align: center",
-	button: "align-items: center; display: flex; height: 100%; justify-content: center; padding: 0 20px",
-	list: "right: 0; width: 100%",
-	item: "padding: 10px 20px"
-};
-const dropdownAction = (item, id)=>{
-	I18N.switchLang(Object.keys(index.value)[id]);
-};
+const dropdownList = computed(()=>{
+	let list = [];
+	I18N.getLanguageNames.forEach((value)=>list.push({innerHtml: value}));
+	return list;
+});
+const dropdownAction = (item, id)=>I18N.switchLang(Object.keys(index.value)[id]);
 </script>
 
 <template>
@@ -57,10 +54,13 @@ const dropdownAction = (item, id)=>{
 
 		<div class="topbar__vr"></div>
 		<Dropdown 
-			:button="dropdownButton"
-			:list="I18N.getLanguageNames"
-			:style="dropdownStyle" 
-			:action="dropdownAction"
+			main-style="margin: 0; min-width: 100px; text-align: center"
+			button-style="align-items: center; display: flex; height: 100%; justify-content: center; padding: 0 20px"
+			list-style="right: 0; width: 100%"
+			item-default-style="padding: 10px 20px"
+			:button-inner-html="dropdownButton"
+			:list="dropdownList"
+			:item-default-action="dropdownAction"
 		/>
 	</div>
 </template>
