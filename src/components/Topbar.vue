@@ -1,4 +1,5 @@
 <script setup>
+import { computed } from "@vue/reactivity";
 import { storeToRefs } from "pinia";
 
 // Stores
@@ -18,10 +19,15 @@ const User = useUser();
 const { login, account } = storeToRefs(User);
 
 // Language dropdown menu properties
+const dropdownButton = computed(()=> {
+	let imgEl = "<img src=\"/svg/language.svg\" style=\"margin-right: 10px; height:calc(.7em + 20px)\"/>";
+	let textEl = "<div>" + I18N.getCurrentName + "</div>";
+	return imgEl + textEl;
+});
 const dropdownStyle = {
 	container: "margin: 0; min-width: 100px; text-align: center",
-	button: "padding: 10px 20px",
-	list: "min-width: 100px; right: 0",
+	button: "align-items: center; display: flex; height: 100%; justify-content: center; padding: 0 20px",
+	list: "right: 0; width: 100%",
 	item: "padding: 10px 20px"
 };
 const dropdownAction = (item, id)=>{
@@ -51,7 +57,7 @@ const dropdownAction = (item, id)=>{
 
 		<div class="topbar__vr"></div>
 		<Dropdown 
-			:name="I18N.getCurrentName"
+			:button="dropdownButton"
 			:list="I18N.getLanguageNames"
 			:style="dropdownStyle" 
 			:action="dropdownAction"
@@ -80,10 +86,12 @@ const dropdownAction = (item, id)=>{
 	.topbar__welcome {
 		font-style: italic;
 	}
+
 	.topbar__vr {
 		border-left: 1px solid lightgray;
 		margin: 0 !important;
 	}
+
 	.topbar__btn:hover {
 		color: red;
 	}

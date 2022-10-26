@@ -8,6 +8,7 @@
 	},
 	"header": {
 		"searchbox": {
+			"input": "Discover something",
 			"button": "Search"
 		}
 	}

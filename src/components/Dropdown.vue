@@ -1,7 +1,7 @@
 <script setup>
 // External properties
 const props = defineProps({
-    name: String,
+    button: String,
     list: Array,
     style: Object,
     action: Function
@@ -10,7 +10,7 @@ const props = defineProps({
 
 <template>
     <div class="dropdown" :style="style.container">
-        <div class="dropdown__btn" :style="style.button">{{ name }}</div>
+        <div class="dropdown__btn" :style="style.button" v-html="button"></div>
         <div class="dropdown__list" :style="style.list">
             <a 
                 class="dropdown__list__item" 
@@ -18,7 +18,8 @@ const props = defineProps({
                 href="#" 
                 @click="props.action(item, id)"
                 v-for="(item, id) in props.list"
-            >{{ item }}</a>
+                v-html="item"
+            ></a>
         </div>
     </div>
 </template>

@@ -1,54 +1,38 @@
 import { defineStore } from "pinia";
+
 import { ajaxGet } from "../modules/ajax.js";
 import { localStorageGet, localStorageSet } from "../modules/localStorage.js";
-
-// Match language
-const matchLang = (index, key)=>{
-	let prefix = key.indexOf("_");
-	if (prefix !== -1)
-		return index.find((value)=>value === key);
-
-	prefix = key.substr(0, prefix);
-	return index.find((value)=>value === key) || index.find((value)=>value === prefix);
-};
 
 // Export store
 export const useI18NStore = defineStore("i18n", {
 	state: ()=>({
 		index: null,
 		current: null,
-		lang: {},
+		lang: null,
 		cache: []
 	}),
 	getters: {
 		getCurrentName: (state)=> {
-			try {
-				return state.index[state.current];
-			}
-			catch (e) {
-				return "";
-			}
+			return state.index === null || state.current === null ? 
+				"" : (state.index[state.current] ?? "");
 		},
 		getLanguageNames: (state)=>{
-			try {
-				return Object.values(state.index);
-			}
-			catch (e) {
-				return [];
-			}
+			return state.index === null ? [] : Object.values(state.index);
 		},
 		getLang: (state)=>((key)=>{
-			let rtn = state.lang;
-			let ls = key.split(".");
+			if (state.lang === null)
+				return key;
 
-			for (let i = 0; i < ls.length; ++i) 
-				if (rtn[ls[i]] === undefined)
+			let lang = state.lang;
+			let list = key.split(".");
+			for (let i = 0; i < list.length; ++i) 
+				if (lang[list[i]] === undefined)
 					return key;
-				else if ((typeof rtn[ls[i]]) === "object")
-					rtn = rtn[ls[i]];
-				else if ((typeof rtn[ls[i]]) === "string") {
-					if (i + 1 === ls.length)
-						return rtn[ls[i]];
+				else if ((typeof lang[list[i]]) === "object")
+					lang = lang[list[i]];
+				else if ((typeof lang[list[i]]) === "string") {
+					if (i + 1 === list.length)
+						return lang[list[i]];
 					else 
 						return key;
 				}
@@ -57,39 +41,41 @@ export const useI18NStore = defineStore("i18n", {
 		})
 	},
 	actions: {
-		updateLocalStorage: function() {
+		updateLocal: function() {
 			localStorageSet("i18n", {current: this.current});
+		},
+		matchLang: function(key) {
+			let prefix = key.indexOf("_");
+			let list = Object.keys(this.index);
+			if (prefix === -1)
+				return list.find((value)=>value === key);
+
+			prefix = key.substr(0, prefix);
+			return list.find((value)=>value === key) || list.find((value)=>value === prefix);
 		},
 		init: async function() {
 			if (this.index !== null)
 				return;
 
-			this.index = JSON.parse(await ajaxGet(`/i18n/index.json`));
-
+			this.index = JSON.parse(await ajaxGet("/i18n/index.json"));
 			this.current = (localStorageGet("i18n").current || navigator.systemLanguage || navigator.language).replace("-", "_");
-			this.current = (matchLang(Object.keys(this.index), this.current) ?? "en_US");
-			this.updateLocalStorage();
-
+			this.current = (this.matchLang(this.current) ?? "en_US");
 			this.lang = JSON.parse(await ajaxGet(`/i18n/${this.current}.json`));
-
 			this.cache[this.current] = this.lang;
+
+			this.updateLocal();
 		},
 		switchLang: async function(key) {
-			// Find in index
-			this.current = matchLang(Object.keys(this.index), key);
-			if (this.current === undefined)
-				this.current = "en_US";
-			this.updateLocalStorage();
+			this.current = (this.matchLang(key) ?? "en_US");
 
-			// Find in cache
-			if (this.cache[this.current] !== undefined) {
+			if (this.cache[this.current] !== undefined)
 				this.lang = this.cache[this.current];
-				return;
+			else {
+				this.lang = JSON.parse(await ajaxGet(`/i18n/${this.current}.json`));
+				this.cache[this.current] = this.lang;
 			}
 
-			// Find in remote
-			this.lang = JSON.parse(await ajaxGet(`/i18n/${this.current}.json`));
-			this.cache[this.current] = this.lang;
+			this.updateLocal();
 		}
 	}
 });

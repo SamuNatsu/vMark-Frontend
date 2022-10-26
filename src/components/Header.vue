@@ -1,7 +1,17 @@
 <script setup>
 import { ref } from "vue";
+import { useRouter } from "vue-router";
+
 // Stores
 import { useI18NStore } from "../stores/I18N";
+
+// Get properties
+const props = defineProps({
+    header: Object
+});
+
+// Router
+const router = useRouter();
 
 // I18N store
 const I18N = useI18NStore();
@@ -9,14 +19,18 @@ const I18N = useI18NStore();
 // Search click
 const searchText = ref("");
 const searchClick = ()=>{
-    alert(searchText.value);
+    router.push({
+        name: "search",
+        query: {
+            t: searchText.value
+        }
+    });
 }
-
 </script>
 
 <template>
     <div class="header">
-        <div>Header</div>
+        <div :style="header.style" v-html="header.title"></div>
         <div class="header__searchbox">
             <input 
                 class="header__searchbox__input" 
