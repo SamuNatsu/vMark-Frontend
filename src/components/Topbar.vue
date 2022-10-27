@@ -4,18 +4,18 @@ import { storeToRefs } from "pinia";
 
 // Stores
 import { useI18NStore } from "../stores/I18N.js";
-import { useUser } from "../stores/User.js";
+import { useUserStore } from "../stores/User.js";
 
 // Components
-import Dropdown from "./independ/Dropdown.vue";
+import Dropdown from "./Dropdown.vue";
 
 // I18N store
 const I18N = useI18NStore();
 await I18N.init();
-const { index } = storeToRefs(I18N);
+const { index } = I18N;
 
 // User store
-const User = useUser();
+const User = useUserStore();
 const { login, account } = storeToRefs(User);
 
 // Language dropdown menu properties
@@ -29,7 +29,7 @@ const dropdownList = computed(()=>{
 	I18N.getLanguageNames.forEach((value)=>list.push({innerHtml: value}));
 	return list;
 });
-const dropdownAction = (item, id)=>I18N.switchLang(Object.keys(index.value)[id]);
+const dropdownAction = (item, id)=>I18N.switchLang(Object.keys(index)[id]);
 </script>
 
 <template>
@@ -72,6 +72,7 @@ const dropdownAction = (item, id)=>I18N.switchLang(Object.keys(index.value)[id])
 	}
 
 	.topbar {
+		background: #fff;
 		box-shadow: lightgray 0 1px 5px;
 		color: gray;
 		display: flex;

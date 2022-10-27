@@ -17,8 +17,8 @@ Final design for software engineering lesson
 ### Critical components
 
 - [x] Topbar
-- [ ] Header
-- [ ] Category select bar
+- [x] Header
+- [x] Category select bar
 - [ ] Item showcase
 - [ ] Footer
 - [ ] Side buttons
