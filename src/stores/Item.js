@@ -24,68 +24,43 @@ export const useItemStore = defineStore("item", {
     state: ()=>({
 		category: [
 			{
-				name: "Cate 1",
-				cid: 1,
+				name: "XXXXX",
 				sub: [
-					{
-						name: "Cate 1-1",
-						cid: 2
-					},
-					{
-						name: "Cate 1-2",
-						cid: 3
-					}
+					{name: "XXXXX"},
+					{name: "XXXXX"},
+					{name: "XXXXX"}
 				]
-			}
+			},
+			{name: "XXXXX"},
+			{name: "XXXXX"}
 		],
 		items: [
 			{
-				name: "Item 1",
-				iid: 1,
-				price: 114514.2,
-				sale: 810
+				name: "XXXXX",
+				price: 0
 			},
 			{
-				name: "Item 1",
-				iid: 1,
-				price: 114514,
-				sale: 810
+				name: "XXXXX",
+				price: 0
 			},
 			{
-				name: "Item 1",
-				iid: 1,
-				price: 114514,
-				sale: 810
+				name: "XXXXX",
+				price: 0
 			},
 			{
-				name: "Item 1",
-				iid: 1,
-				price: 114514,
-				sale: 810
-			},
-			{
-				name: "Item 1",
-				iid: 1,
-				price: 114514,
-				sale: 810
-			},
-			{
-				name: "Item 1",
-				iid: 1,
-				price: 114514,
-				sale: 810
-			},
-			{
-				name: "Item 1",
-				iid: 1,
-				price: 114514,
-				sale: 810
+				name: "XXXXX",
+				price: 0
 			}
-		]
+		],
+		pageNav: {
+			total: 999,
+			current: 1,
+			next: "#"
+		}
     }),
 	getters: {
-		getCategoryLink: (state)=>((cid)=>`/search?category=${cid}`),
-		getItemLink: (state)=>((iid)=>`/item/${iid}`),
+		getCategoryLink: (state)=>((cid)=>(typeof cid) === "number" ? `/search?category=${cid}` : "#"),
+		getItemLink: (state)=>((iid)=>(typeof iid) === "number" ? `/item/${iid}` : "#"),
 		getPrice: (state)=>((item)=>{
 			if (item.sale === undefined)
 				return convert(item.price);

@@ -1,7 +1,7 @@
 <script setup>
 // Store
-import { useItemStore } from "../stores/Item.js";
-import { useSkinStore } from "../stores/Skin.js";
+import { useItemStore } from "../stores/Item";
+import { useSkinStore } from "../stores/Skin";
 
 // Item store
 const item = useItemStore();

@@ -1,6 +1,6 @@
 {
 	"topbar": {
-		"welcomeFormat": "Welcome back, {0}",
+		"welcome": "Welcome back, {0}",
 		"center": "User center",
 		"admin": "Admin center",
 		"login": "Login",
@@ -11,5 +11,9 @@
 			"input": "Discover something",
 			"button": "Search"
 		}
+	},
+	"pageNav": {
+		"last": "Previous Page",
+		"next": "Next Page"
 	}
 }

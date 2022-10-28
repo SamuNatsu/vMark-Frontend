@@ -2,7 +2,7 @@
 import { storeToRefs } from "pinia";
 
 // Stores
-import { useSkinStore } from "../stores/Skin.js";
+import { useSkinStore } from "../stores/Skin";
 
 // Components
 import Topbar from "../components/Topbar.vue";
@@ -13,10 +13,10 @@ import ItemShowcase from "../components/ItemShowcase.vue";
 // Skin store
 const skin = useSkinStore();
 await skin.init();
-const { title } = skin;
+const { title } = storeToRefs(skin);
 
 // Set title
-document.querySelector("title").innerHTML = title.index || "vMark";
+document.querySelector("title").innerHTML = title.value.index || "vMark";
 </script>
 
 <template>

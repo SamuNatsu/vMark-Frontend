@@ -3,8 +3,8 @@ import { ref } from "vue";
 import { useRouter } from "vue-router";
 
 // Stores
-import { useI18NStore } from "../stores/I18N.js";
-import { useSkinStore } from "../stores/Skin.js";
+import { useI18NStore } from "../stores/I18N";
+import { useSkinStore } from "../stores/Skin";
 
 // Router
 const router = useRouter();

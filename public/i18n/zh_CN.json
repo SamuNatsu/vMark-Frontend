@@ -1,6 +1,6 @@
 {
 	"topbar": {
-		"welcomeFormat": "欢迎回来，{0}",
+		"welcome": "欢迎回来，{0}",
 		"center": "用户中心",
 		"admin": "后台管理",
 		"login": "登录",
@@ -11,5 +11,9 @@
 			"input": "搜点什么",
 			"button": "搜索"
 		}
+	},
+	"pageNav": {
+		"last": "上一页",
+		"next": "下一页"
 	}
 }

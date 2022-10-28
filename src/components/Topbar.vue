@@ -3,8 +3,8 @@ import { computed } from "@vue/reactivity";
 import { storeToRefs } from "pinia";
 
 // Stores
-import { useI18NStore } from "../stores/I18N.js";
-import { useUserStore } from "../stores/User.js";
+import { useI18NStore } from "../stores/I18N";
+import { useUserStore } from "../stores/User";
 
 // Components
 import Dropdown from "./Dropdown.vue";
@@ -15,8 +15,9 @@ await I18N.init();
 const { index } = I18N;
 
 // User store
-const User = useUserStore();
-const { login, account } = storeToRefs(User);
+const user = useUserStore();
+await user.init();
+const { login, account } = storeToRefs(user);
 
 // Language dropdown menu properties
 const dropdownButton = computed(()=>{
@@ -24,20 +25,18 @@ const dropdownButton = computed(()=>{
 	let textEl = `<div>${I18N.getCurrentName}</div>`;
 	return imgEl + textEl;
 });
-const dropdownList = computed(()=>{
-	let list = [];
-	I18N.getLanguageNames.forEach((value)=>list.push({innerHtml: value}));
-	return list;
-});
+const dropdownList = computed(()=>I18N.getLanguageNames.map((value)=>({innerHtml: value})));
 const dropdownAction = (item, id)=>I18N.switchLang(Object.keys(index)[id]);
 </script>
 
 <template>
 	<div class="topbar">
 		<div class="topbar__welcome" v-if="login">
-			{{ I18N.getLang("topbar.welcomeFormat").format(account) }}
+			{{ I18N.getLang("topbar.welcome").format(account) }}
 		</div>
+
 		<div class="topbar__vr" v-if="login"></div>
+
 		<div class="topbar__btn" v-if="login">
 			<RouterLink to="user">{{ I18N.getLang("topbar.center") }}</RouterLink>
 		</div>
@@ -53,6 +52,7 @@ const dropdownAction = (item, id)=>I18N.switchLang(Object.keys(index)[id]);
 		</div>
 
 		<div class="topbar__vr"></div>
+
 		<Dropdown 
 			main-style="margin: 0; min-width: 100px; text-align: center"
 			button-style="align-items: center; display: flex; height: 100%; justify-content: center; padding: 0 20px"
