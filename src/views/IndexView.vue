@@ -8,12 +8,12 @@ import { useSkinStore } from "../stores/Skin.js";
 import Topbar from "../components/Topbar.vue";
 import Header from "../components/Header.vue";
 import Categorybar from "../components/Categorybar.vue";
+import ItemShowcase from "../components/ItemShowcase.vue";
 
 // Skin store
 const skin = useSkinStore();
 await skin.init();
 const { title } = skin;
-const { header } = storeToRefs(skin);
 
 // Set title
 document.querySelector("title").innerHTML = title.index || "vMark";
@@ -21,12 +21,9 @@ document.querySelector("title").innerHTML = title.index || "vMark";
 
 <template>
 	<Topbar />
-	<Header 
-		:main-style="header.mainStyle"
-		:title-style="header.titleStyle"
-		:title-inner-html="header.titleInnerHtml"
-	/>
+	<Header />
 	<Categorybar />
+	<ItemShowcase />
 </template>
 
 <style scoped>

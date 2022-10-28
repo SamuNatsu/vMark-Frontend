@@ -3,22 +3,20 @@ import { ref } from "vue";
 import { useRouter } from "vue-router";
 
 // Stores
-import { useI18NStore } from "../stores/I18N";
-
-// Get properties
-const props = defineProps({
-    mainStyle: String,
-    titleStyle: String,
-    divbarStyle: String,
-
-    titleInnerHtml: String
-});
+import { useI18NStore } from "../stores/I18N.js";
+import { useSkinStore } from "../stores/Skin.js";
 
 // Router
 const router = useRouter();
 
 // I18N store
 const I18N = useI18NStore();
+await I18N.init();
+
+// Skin store
+const skin = useSkinStore();
+await skin.init();
+const { header } = skin;
 
 // Title click
 const titleClick = ()=>location.href = location.protocol;
@@ -43,12 +41,12 @@ const defaultInnerHtml = '<span style="color:red">v</span><span>Mark</span>';
 </script>
 
 <template>
-    <div class="header" :style="mainStyle">
+    <div class="header" :style="header.mainStyle">
         <div 
             class="header__title"
-            :style="titleStyle || defaultStyle" 
+            :style="header.titleStyle || defaultStyle" 
             @click="titleClick"
-            v-html="titleInnerHtml || defaultInnerHtml"
+            v-html="header.titleInnerHtml || defaultInnerHtml"
         />
         <div class="header__searchbox">
             <input 
@@ -70,7 +68,7 @@ const defaultInnerHtml = '<span style="color:red">v</span><span>Mark</span>';
             </button>
         </div>
     </div>
-    <div class="divbar" :style="divbarStyle"></div>
+    <div class="divbar" :style="header.divbarStyle"></div>
 </template>
 
 <style scoped>
