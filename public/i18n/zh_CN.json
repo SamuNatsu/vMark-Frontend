@@ -15,5 +15,23 @@
 	"pageNav": {
 		"last": "上一页",
 		"next": "下一页"
+	},
+	"login": {
+		"title": "用户登录",
+		"account": "用户名",
+		"password": "密码",
+		"submit": "登录"
+	},
+	"register": {
+		"title": "用户注册",
+		"account": {
+			"title": "用户名",
+			"desc": "由英文大小写字母、数字及下划线组成，长度至少为6"
+		},
+		"password": {
+			"title": "密码",
+			"desc": "由英文大小写字母、数字及特殊符号组成，长度至少为6"
+		},
+		"submit": "注册账号"
 	}
 }

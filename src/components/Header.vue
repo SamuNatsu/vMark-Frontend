@@ -1,5 +1,6 @@
 <script setup>
 import { ref } from "vue";
+import { storeToRefs } from "pinia";
 import { useRouter } from "vue-router";
 
 // Stores
@@ -16,24 +17,19 @@ await I18N.init();
 // Skin store
 const skin = useSkinStore();
 await skin.init();
-const { header } = skin;
+const { header } = storeToRefs(skin);
 
 // Title click
-const titleClick = ()=>location.href = location.protocol;
+const titleClick = ()=>location.href = location.origin;
 
 // Search click
 const searchText = ref("");
-const searchClick = ()=>{
-    if (searchText.value === "")
-        location.href = location.href;
-
-    router.push({
-        name: "search",
-        query: {
-            t: searchText.value
-        }
-    });
-}
+const searchClick = ()=>router.push({
+    name: "search",
+    query: {
+        t: searchText.value
+    }
+});
 
 // Default
 const defaultStyle = "font-size: 4em; font-weight: bold";
@@ -41,21 +37,25 @@ const defaultInnerHtml = '<span style="color:red">v</span><span>Mark</span>';
 </script>
 
 <template>
+    <!-- Header -->
     <div class="header" :style="header.mainStyle">
+        <!-- Title -->
         <div 
+            v-html="header.titleInnerHtml || defaultInnerHtml"
             class="header__title"
             :style="header.titleStyle || defaultStyle" 
             @click="titleClick"
-            v-html="header.titleInnerHtml || defaultInnerHtml"
         />
+        <!-- Search box -->
         <div class="header__searchbox">
+            <!-- Search input -->
             <input 
+                v-model="searchText"
                 class="header__searchbox__input" 
                 type="text" 
                 :placeholder="I18N.getLang('header.searchbox.input')"
-                v-model="searchText"
             />
-
+            <!-- Search button -->
             <button 
                 class="header__searchbox__button" 
                 :title="I18N.getLang('header.searchbox.button')"
@@ -68,6 +68,7 @@ const defaultInnerHtml = '<span style="color:red">v</span><span>Mark</span>';
             </button>
         </div>
     </div>
+    <!-- Divide bar -->
     <div class="divbar" :style="header.divbarStyle"></div>
 </template>
 

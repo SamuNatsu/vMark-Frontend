@@ -1,5 +1,4 @@
 import { defineStore } from "pinia";
-import { ajaxGet } from "../modules/ajax.js";
 
 // Convert price
 const convert = (price)=>{
@@ -69,6 +68,6 @@ export const useItemStore = defineStore("item", {
 		})
 	},
 	actions: {
-		init: async ()=>{}
+		init: async function() {}
 	}
 });

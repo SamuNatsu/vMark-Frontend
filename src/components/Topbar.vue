@@ -12,12 +12,11 @@ import Dropdown from "./Dropdown.vue";
 // I18N store
 const I18N = useI18NStore();
 await I18N.init();
-const { index } = I18N;
 
 // User store
 const user = useUserStore();
 await user.init();
-const { login, account } = storeToRefs(user);
+const { login, admin, account } = storeToRefs(user);
 
 // Language dropdown menu properties
 const dropdownButton = computed(()=>{
@@ -25,34 +24,43 @@ const dropdownButton = computed(()=>{
 	let textEl = `<div>${I18N.getCurrentName}</div>`;
 	return imgEl + textEl;
 });
-const dropdownList = computed(()=>I18N.getLanguageNames.map((value)=>({innerHtml: value})));
-const dropdownAction = (item, id)=>I18N.switchLang(Object.keys(index)[id]);
+const dropdownList = computed(()=>I18N.getIndexValues.map((value)=>({innerHtml: value})));
+const dropdownAction = (item, id)=>I18N.switchLang(I18N.getIndexKeys[id]);
 </script>
 
 <template>
+	<!-- Container -->
 	<div class="topbar">
-		<div class="topbar__welcome" v-if="login">
+		<!-- Welcome message (Login only) -->
+		<div v-if="login" class="topbar__welcome">
 			{{ I18N.getLang("topbar.welcome").format(account) }}
 		</div>
 
-		<div class="topbar__vr" v-if="login"></div>
+		<div v-if="login" class="topbar__vr"></div>
 
-		<div class="topbar__btn" v-if="login">
+		<!-- User center entry (Login only) -->
+		<div v-if="login" class="topbar__btn">
 			<RouterLink to="user">{{ I18N.getLang("topbar.center") }}</RouterLink>
 		</div>
-		<div class="topbar__btn" v-if="login">
+
+		<!-- Admin center entry (Login only, admin only) -->
+		<div v-if="login && admin" class="topbar__btn">
 			<RouterLink to="admin">{{ I18N.getLang("topbar.admin") }}</RouterLink>
 		</div>
 
-		<div class="topbar__btn" v-if="!login">
+		<!-- Login entry (No login only) -->
+		<div v-if="!login" class="topbar__btn">
 			<RouterLink to="login">{{ I18N.getLang("topbar.login") }}</RouterLink>
 		</div>
-		<div class="topbar__btn" v-if="!login">
+
+		<!-- Register entry (No login only) -->
+		<div v-if="!login" class="topbar__btn">
 			<RouterLink to="register">{{ I18N.getLang("topbar.register") }}</RouterLink>
 		</div>
 
 		<div class="topbar__vr"></div>
 
+		<!-- Language selection -->
 		<Dropdown 
 			main-style="margin: 0; min-width: 100px; text-align: center"
 			button-style="align-items: center; display: flex; height: 100%; justify-content: center; padding: 0 20px"

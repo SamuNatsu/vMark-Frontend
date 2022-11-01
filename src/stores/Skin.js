@@ -1,5 +1,4 @@
 import { defineStore } from "pinia";
-import { ajaxGet } from "../modules/ajax.js";
 
 // Export store
 export const useSkinStore = defineStore("skin", {
@@ -8,6 +7,6 @@ export const useSkinStore = defineStore("skin", {
         header: {}
     }),
 	actions: {
-		init: async ()=>{}
+		init: async function() {}
 	}
 });

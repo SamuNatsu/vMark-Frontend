@@ -1,10 +1,15 @@
 <script setup>
 import { computed } from "@vue/reactivity";
 import { storeToRefs } from "pinia";
+import { onBeforeRouteUpdate, useRoute, useRouter } from "vue-router";
 
 // Store
 import { useI18NStore } from "../stores/I18N";
 import { useItemStore } from "../stores/Item";
+
+// Router
+const route = useRoute();
+const router = useRouter();
 
 // I18N store
 const i18n = useI18NStore();
@@ -16,36 +21,109 @@ const { items, pageNav } = storeToRefs(item);
 
 // Page navigation
 const pageNavLast = computed(()=>pageNav.value.last ? i18n.getLang("pageNav.last") : "");
-const pageNavLabel = computed(()=>{
-    
-});
 const pageNavNext = computed(()=>pageNav.value.next ? i18n.getLang("pageNav.next") : "");
+const pageNavJump = (page)=>{
+    router.push({
+        query: {
+            ...route.query,
+            p: "" + page
+        }
+    });
+};
+
+// On route update
+onBeforeRouteUpdate((to)=>{
+    // Todo: update items
+    pageNav.value.current = parseInt(to.query.p ?? "1");
+});
 </script>
 
 <template>
+    <!-- Showcase -->
     <div class="showcase">
+        <!-- Item -->
         <div v-for="i in items" class="showcase__item">
             <div class="showcase__item__wrapper">
+                <!-- Item image -->
                 <div class="showcase__item__img">
                     <RouterLink :to="item.getItemLink(i.iid)" :title="i.name">
                         <img :src="i.mainPic || '/svg/item.svg'"/>
                     </RouterLink>
                 </div>
+
+                <!-- Item info -->
                 <div class="showcase__item__info">
+                    <!-- Item name -->
                     <div class="showcase__item__name">
                         <RouterLink :to="item.getItemLink(i.iid)" :title="i.name">
                             {{ i.name }}
                         </RouterLink>
                     </div>
-                    <div class="showcase__item__price" v-html="item.getPrice(i)"></div>
+
+                    <!-- Item price -->
+                    <div v-html="item.getPrice(i)" class="showcase__item__price"></div>
                 </div>
             </div>
         </div>
     </div>
+    <!-- Page navigation -->
     <div class="page-nav" v-if="pageNav.last || pageNav.next">
-        <div class="page-nav__btn"><routerLink :to="pageNav.last ?? '#'">{{ pageNavLast }}</routerLink></div>
-        <div class="page-nav__label" v-html="pageNavLabel"/>
-        <div class="page-nav__btn"><RouterLink :to="pageNav.next ?? '#'">{{ pageNavNext }}</RouterLink></div>
+        <!-- Previous page -->
+        <div class="page-nav__btn"><RouterLink :to="pageNav.last || '#'">{{ pageNavLast }}</RouterLink></div>
+
+        <!-- Page labels -->
+        <div class="page-nav__label">
+            <!-- First -->
+            <div 
+                class="page-nav__label__btn"
+                :class="{'page-nav__label__btn--current': pageNav.current === 1}"
+                @click="pageNavJump(1)"
+            >
+                1
+            </div>
+
+            <div v-if="pageNav.current > 3">...</div>
+
+            <!-- Previous -->
+            <div 
+                v-if="pageNav.current > 2" 
+                class="page-nav__label__btn"
+                @click="pageNavJump(pageNav.current - 1)"
+            >
+                {{ pageNav.current - 1 }}
+            </div>
+
+            <!-- Current -->
+            <div 
+                v-if="pageNav.current !== 1 && pageNav.current != pageNav.total"
+                class="page-nav__label__btn--current"
+            >
+                {{ pageNav.current }}
+            </div>
+
+            <!-- Next -->
+            <div
+                v-if="pageNav.total - pageNav.current > 1" 
+                class="page-nav__label__btn"
+                @click="pageNavJump(pageNav.current + 1)"
+            >
+                {{ pageNav.current + 1 }}
+            </div>
+
+            <div v-if="pageNav.total - pageNav.current > 2">...</div>
+
+            <!-- Last -->
+            <div 
+                class="page-nav__label__btn"
+                :class="{'page-nav__label__btn--current': pageNav.current === pageNav.total}"
+                @click="pageNavJump(pageNav.total)"
+            >
+                {{ pageNav.total }}
+            </div>
+        </div>
+
+        <!-- Next page -->
+        <div class="page-nav__btn"><RouterLink :to="pageNav.next || '#'">{{ pageNavNext }}</RouterLink></div>
     </div>
 </template>
 
@@ -122,6 +200,7 @@ const pageNavNext = computed(()=>pageNav.value.next ? i18n.getLang("pageNav.next
     }
 
     .page-nav {
+        align-items: center;
         background: #fff;
         border-radius: 20px;
         box-shadow: lightgray 1px 1px 5px;
@@ -139,6 +218,21 @@ const pageNavNext = computed(()=>pageNav.value.next ? i18n.getLang("pageNav.next
     }
     .page-nav__label>div {
         margin: 0 10px;
+        padding: 2px 5px;
+    }
+
+    .page-nav__label__btn {
+        cursor: pointer;
+    }
+    .page-nav__label__btn:hover {
+        background: gray;
+        border-radius: 3px;
+        color: white;
+    }
+    .page-nav__label__btn--current {
+        background: gray;
+        border-radius: 3px;
+        color: white;
     }
 
     .page-nav__btn>a {

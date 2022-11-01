@@ -1,16 +1,16 @@
 <script setup>
 // External properties
 const props = defineProps({
-    mainStyle: String,
-    buttonStyle: String,
-    listStyle: String,
-    itemDefaultStyle: String,
+    mainStyle: String,                  // Container style <String>
+    buttonStyle: String,                // Button style <String>
+    listStyle: String,                  // List style <String>
+    itemDefaultStyle: String,           // Item default style <String>
 
-    buttonInnerHtml: String,
+    buttonInnerHtml: String,            // Button inner html <String>
 
-    list: Array,
+    list: Array,                        // Item list <Array: Object> <Object: innerHtml, style, action>
 
-    itemDefaultAction: {
+    itemDefaultAction: {                // Item default action
         type: Function,
         required: true
     }
@@ -18,16 +18,21 @@ const props = defineProps({
 </script>
 
 <template>
+    <!-- Container -->
     <div class="dropdown" :style="mainStyle">
+        <!-- Button -->
         <div class="dropdown__btn" :style="buttonStyle" v-html="buttonInnerHtml" />
+        <!-- List -->
         <div class="dropdown__list" :style="listStyle">
+            <!-- Item -->
             <a 
                 v-for="(item, id) in list"
+                v-html="item.innerHtml"
                 class="dropdown__list__item"
                 :style="item.style || itemDefaultStyle"
                 href="#"
                 @click="(item.action || itemDefaultAction)(item, id)"
-                v-html="item.innerHtml" />
+            />
         </div>
     </div>
 </template>

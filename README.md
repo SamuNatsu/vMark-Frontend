@@ -6,10 +6,10 @@ Final design for software engineering lesson
 
 ### Pages
 
-- [ ] Index page
+- [x] Index page
 - [ ] Search page
-- [ ] Login page
-- [ ] Register page
+- [x] Login page
+- [x] Register page
 - [ ] Item detail page
 - [ ] User page
 - [ ] Admin page
@@ -19,8 +19,8 @@ Final design for software engineering lesson
 - [x] Topbar
 - [x] Header
 - [x] Category select bar
-- [ ] Item showcase
-- [ ] Footer
+- [x] Item showcase
+- [x] Footer
 - [ ] Side buttons
 - [ ] Cart showcase
 - [ ] Item detail info

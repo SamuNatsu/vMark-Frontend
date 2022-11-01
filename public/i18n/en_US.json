@@ -15,5 +15,23 @@
 	"pageNav": {
 		"last": "Previous Page",
 		"next": "Next Page"
+	},
+	"login": {
+		"title": "User Login",
+		"account": "Account",
+		"password": "Password",
+		"submit": "Log in"
+	},
+	"register": {
+		"title": "User Register",
+		"account": {
+			"title": "Account",
+			"desc": "Uppercase/lowercase letters, digits or underlines, length greater than 6"
+		},
+		"password": {
+			"title": "Password",
+			"desc": "Uppercase/lowercase letters, digits or special characters, length greater than 6"
+		},
+		"submit": "Register"
 	}
 }
