@@ -7,7 +7,7 @@ import ItemSelect from '../components/ItemSelect.vue';
 import { onMounted, ref } from 'vue';
 import { useRoute, useRouter } from 'vue-router';
 import axios from 'axios';
-import { useI18NStore } from '../stores/I18N';
+import { useI18NStore } from '../pinia/I18N';
 import { computed } from '@vue/reactivity';
 import { cart } from "../modules/Cart"
 

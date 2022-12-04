@@ -4,8 +4,8 @@ import { storeToRefs } from "pinia";
 import { useRouter } from "vue-router";
 
 // Stores
-import { useI18NStore } from "../stores/I18N";
-import { useSkinStore } from "../stores/Skin";
+import { useI18NStore } from "../pinia/I18N";
+import { useSkinStore } from "../pinia/Skin";
 
 // Router
 const router = useRouter();

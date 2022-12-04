@@ -2,7 +2,7 @@
 import { storeToRefs } from "pinia";
 
 // Stores
-import { useSkinStore } from "../stores/Skin";
+import { useSkinStore } from "../pinia/Skin";
 
 // Skin store
 const skin = useSkinStore();

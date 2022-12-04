@@ -2,8 +2,8 @@
 import { storeToRefs } from "pinia";
 
 // Store
-import { useItemStore } from "../stores/Item";
-import { useSkinStore } from "../stores/Skin";
+import { useItemStore } from "../pinia/Item";
+import { useSkinStore } from "../pinia/Skin";
 
 // Item store
 const item = useItemStore();

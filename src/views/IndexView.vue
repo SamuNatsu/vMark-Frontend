@@ -2,7 +2,7 @@
 import { storeToRefs } from "pinia";
 
 // Stores
-import { useSkinStore } from "../stores/Skin";
+import { useSkinStore } from "../pinia/Skin";
 
 // Components
 import Topbar from "../components/Topbar.vue";

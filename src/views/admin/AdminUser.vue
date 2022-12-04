@@ -1,8 +1,8 @@
 <script setup>
 import { ref } from 'vue';
 import axios from 'axios';
-import { useI18NStore } from '../../stores/I18N';
-import { useUserStore } from '../../stores/User';
+import { useI18NStore } from '../../pinia/I18N';
+import { useUserStore } from '../../pinia/User';
 
 import Captcha from '../../components/Captcha.vue';
 

@@ -1,6 +1,6 @@
 <script setup>
 import { defineProps, ref, defineExpose } from 'vue';
-import { useI18NStore } from '../stores/I18N';
+import { useI18NStore } from '../pinia/I18N';
 
 const props = defineProps(['max', 'cnt'])
 

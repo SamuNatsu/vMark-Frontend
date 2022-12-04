@@ -1,10 +1,10 @@
 <script setup>
-import { computed } from "@vue/reactivity";
+import { computed } from "vue";
 import { useRouter } from "vue-router";
 
 // Stores
-import { useI18NStore } from "../stores/I18N";
-import { useUserStore } from "../stores/User";
+import { useI18NStore } from "../pinia/I18N";
+import { useUserStore } from "../pinia/User";
 
 // Components
 import Dropdown from "./Dropdown.vue";

@@ -4,9 +4,9 @@ import { storeToRefs } from "pinia";
 import { onBeforeRouteUpdate, useRouter } from "vue-router";
 
 // Stores
-import { useI18NStore } from "../stores/I18N";
-import { useSkinStore } from "../stores/Skin";
-import { useUserStore } from "../stores/User";
+import { useI18NStore } from "../pinia/I18N";
+import { useSkinStore } from "../pinia/Skin";
+import { useUserStore } from "../pinia/User";
 
 // Components
 import Topbar from "../components/Topbar.vue";

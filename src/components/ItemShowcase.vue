@@ -4,8 +4,8 @@ import { storeToRefs } from "pinia";
 import { onBeforeRouteUpdate, useRoute, useRouter } from "vue-router";
 
 // Store
-import { useI18NStore } from "../stores/I18N";
-import { useItemStore } from "../stores/Item";
+import { useI18NStore } from "../pinia/I18N";
+import { useItemStore } from "../pinia/Item";
 
 // Router
 const route = useRoute();

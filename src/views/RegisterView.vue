@@ -2,8 +2,8 @@
 import { storeToRefs } from "pinia";
 
 // Stores
-import { useI18NStore } from "../stores/I18N";
-import { useSkinStore } from "../stores/Skin";
+import { useI18NStore } from "../pinia/I18N";
+import { useSkinStore } from "../pinia/Skin";
 
 // Components
 import Topbar from "../components/Topbar.vue";

@@ -1,13 +1,10 @@
 import { createApp } from "vue";
-import { createPinia } from "pinia";
 
 import App from "./App.vue";
-import router from "./router";
+import router from "./router/router";
+import pinia from "./pinia/pinia"
 
 import "./assets/main.css";
-
-// Create pinia instance
-const pinia = createPinia();
 
 // String format prototype function
 String.prototype.format = function() {
