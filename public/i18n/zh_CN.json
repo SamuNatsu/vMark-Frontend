@@ -1,8 +1,49 @@
 {
+	"admin": {
+		"menu": {
+			"dashboard": "仪表盘",
+			"user": "用户管理",
+			"item": "商品管理",
+			"order": "订单管理",
+			"attachment": "附件管理",
+			"option": "平台配置",
+			"back": "回到主页"
+		},
+		"main": {
+			"user": {
+				"refresh": "重置列表",
+				"search": "搜索用户",
+				"account": "账户名",
+				"name": "昵称",
+				"default_name": "（未设置）",
+				"op": "操作",
+				"rename": "设置昵称",
+				"reset_password": "重置密码",
+				"permit": "设置权限",
+				"delete": "删除用户",
+				"total": "共有 {0} 条记录，共 {1} 页",
+				"message": {
+					"delete": {
+						"confirm": "确定要删除 uid 为 {0} 的用户吗？",
+						"success": "用户已删除"
+					},
+					"rename": {
+						"prompt": "输入新昵称（长度小于 30）",
+						"success": "修改昵称成功"
+					},
+					"reset_password": {
+						"confirm": "确定要将 uid 为 {0} 的用户密码重置为 123456 吗？",
+						"success": "密码已重置"
+					}
+				}
+			}
+		}
+	},
 	"topbar": {
 		"welcome": "欢迎回来，{0}",
 		"center": "用户中心",
 		"admin": "后台管理",
+		"logout": "退出登录",
 		"login": "登录",
 		"register": "注册"
 	},
@@ -20,18 +61,42 @@
 		"title": "用户登录",
 		"account": "用户名",
 		"password": "密码",
-		"submit": "登录"
+		"submit": "登录",
+		"captcha": "验证码",
+		"refresh": "点击刷新验证码"
 	},
 	"register": {
 		"title": "用户注册",
 		"account": {
 			"title": "用户名",
-			"desc": "由英文大小写字母、数字及下划线组成，长度至少为6"
+			"desc": "由英文大小写字母、数字及下划线组成，长度 6~30 个字符"
 		},
 		"password": {
 			"title": "密码",
-			"desc": "由英文大小写字母、数字及特殊符号组成，长度至少为6"
+			"desc": "由英文大小写字母、数字及特殊符号组成，长度至少为 6"
 		},
 		"submit": "注册账号"
+	},
+	"message": {
+		"auth": {
+			"already_login": "已登录，请勿重复登录"
+		},
+		"captcha": {
+			"timeout": "验证码超时，请点击刷新",
+			"wrong": "验证码错误"
+		},
+		"item": {
+			"sold_out": "已售罄"
+		},
+		"invalid": {
+			"account": "账号不合法",
+			"password": "密码不合法",
+			"captcha": "验证码不合法",
+			"uid": "uid 不合法",
+			"new_name": "新昵称不合法"
+		},
+		"fail": {
+			"login": "登录失败，请检查账号和密码"
+		}
 	}
 }

@@ -1,14 +1,20 @@
 <script setup>
+import { computed, ref } from "@vue/reactivity";
 import { storeToRefs } from "pinia";
+import { onBeforeRouteUpdate, useRouter } from "vue-router";
 
 // Stores
 import { useI18NStore } from "../stores/I18N";
 import { useSkinStore } from "../stores/Skin";
+import { useUserStore } from "../stores/User";
 
 // Components
 import Topbar from "../components/Topbar.vue";
 import Header from "../components/Header.vue";
 import Footer from "../components/Footer.vue";
+
+// Rooter
+const router = useRouter();
 
 // I18N store
 const i18n = useI18NStore();
@@ -19,8 +25,49 @@ const skin = useSkinStore();
 await skin.init();
 const { title } = storeToRefs(skin);
 
+// User store
+const user = useUserStore();
+await user.init();
+
 // Set title
 document.querySelector("title").innerHTML = (title.value.login || "Login - vMark");
+
+// Warning
+const message = ref("");
+const warning = computed(()=>message.value === "" ? "" : i18n.getLang(message.value));
+
+// Captcha
+const captchaUrlVersion = ref(0);
+const captchaUrl = computed(()=>vMarkBackendAPI + "api/auth/captcha?v=" + captchaUrlVersion.value);
+const refresh = ()=>captchaUrlVersion.value = Math.trunc(Math.random() * 10000000);
+
+// Login
+const account = ref("");
+const password = ref("");
+const captcha = ref("");
+const login = ()=>{
+    message.value = "";
+
+    if (!/^[0-9a-zA-Z_]{6,30}$/.test(account.value)) {
+        message.value = "message.invalid.account";
+        refresh();
+        return;
+    }
+    if (!/^[0-9a-zA-Z._~!@#$^&*]{6,}$/.test(password.value)) {
+        message.value = "message.invalid.password";
+        refresh();
+        return;
+    }
+    if (!/^[0-9A-Z]{4}$/.test(captcha.value.toUpperCase())) {
+        message.value = "message.invalid.captcha";
+        refresh();
+        return;
+    }
+    let pass = CryptoJS.SHA256(password.value).toString();
+    let capt = captcha.value.toUpperCase();
+
+    user.login(account.value, pass, capt, message, router);
+};
 </script>
 
 <template>
@@ -33,14 +80,24 @@ document.querySelector("title").innerHTML = (title.value.login || "Login - vMark
             <!-- Title -->
             <div class="login__title">{{ i18n.getLang("login.title") }}</div>
 
+            <!-- Warning -->
+            <div class="login__warning">{{ warning }}</div>
+
             <!-- Input -->
             <div class="login__input">
-                <input type="text" :placeholder="i18n.getLang('login.account')"/>
-                <input type="password" :placeholder="i18n.getLang('login.password')"/>
+                <input type="text" :placeholder="i18n.getLang('login.account')" v-model="account"/>
+                <input type="password" :placeholder="i18n.getLang('login.password')" v-model="password"/>
+                <input type="text" :placeholder="i18n.getLang('login.captcha')" v-model="captcha"/>
+            </div>
+
+            <!-- Captcha -->
+            <div class="login__captcha">
+                <img :src="captchaUrl" @click="refresh"/>
+                <div>{{ i18n.getLang('login.refresh') }}</div>
             </div>
 
             <!-- Submit -->
-            <button class="login__submit">{{ i18n.getLang("login.submit") }}</button>
+            <div><button class="login__submit" @click="login">{{ i18n.getLang("login.submit") }}</button></div>
         </div>
     </div>
 
@@ -92,6 +149,27 @@ document.querySelector("title").innerHTML = (title.value.login || "Login - vMark
     }
     .login__input>input:focus {
         border: 2px solid gray;
+    }
+
+    .login__captcha {
+        align-items: center;
+        display: flex;
+    }
+    .login__captcha>img {
+        border: 1px solid lightgray;
+        cursor: pointer;
+        margin: 0 10px;
+    }
+    .login__captcha>div {
+        color: gray;
+        font-size: small;
+        font-style: italic;
+    }
+
+    .login__warning {
+        color: red;
+        font-size: small;
+        font-weight: bold;
     }
 
     .login__submit {

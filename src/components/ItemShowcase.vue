@@ -47,7 +47,7 @@ onBeforeRouteUpdate((to)=>{
                 <!-- Item image -->
                 <div class="showcase__item__img">
                     <RouterLink :to="item.getItemLink(i.iid)" :title="i.name">
-                        <img :src="i.mainPic || '/svg/item.svg'"/>
+                        <img :src="item.getMainPic(i) || '/svg/item.svg'"/>
                     </RouterLink>
                 </div>
 
@@ -62,6 +62,9 @@ onBeforeRouteUpdate((to)=>{
 
                     <!-- Item price -->
                     <div v-html="item.getPrice(i)" class="showcase__item__price"></div>
+
+                    <!-- Sold out -->
+                    <div v-if="(i.remain === 0)" class="showcase__item__soldout">{{ i18n.getLang("message.item.sold_out") }}</div>
                 </div>
             </div>
         </div>
@@ -114,6 +117,7 @@ onBeforeRouteUpdate((to)=>{
 
             <!-- Last -->
             <div 
+                v-if="pageNav.total > 1"
                 class="page-nav__label__btn"
                 :class="{'page-nav__label__btn--current': pageNav.current === pageNav.total}"
                 @click="pageNavJump(pageNav.total)"
@@ -197,6 +201,11 @@ onBeforeRouteUpdate((to)=>{
     }
     .showcase__item__price::before {
         content: '¥'
+    }
+
+    .showcase__item__soldout {
+        color: red;
+        font-weight: bold;
     }
 
     .page-nav {

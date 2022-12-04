@@ -1,21 +1,22 @@
+import axios from "axios";
 import { defineStore } from "pinia";
 
 // Convert price
 const convert = (price)=>{
-	let str = "" + Math.round(price * 100) / 100;
-	let pos = str.indexOf(".");
+	if (price < 100) {
+		let str = "" + price;
+		while (str.length < 2)
+			str = "0" + str;
+		return "0." + str;
+	}
 
-	if (pos === -1)
-		str += ".00";
-	else if (pos === str.length - 2)
-		str += "0";
-
-	pos = str.indexOf(".");
+	let str = "" + price;
+	let dec = str.substring(str.length - 2);
+	str = str.substring(0, str.length - 2);
 	let arr = [];
-	let ts = str.substring(0, pos);
-	for (let i = ts.length; i > 0; i -= 3)
-		arr.push(ts.substring(Math.max(0, i - 3), i));
-	return arr.reverse().join(",") + str.substring(pos);
+	for (let i = str.length; i > 0; i -= 3)
+		arr.push(str.substring(Math.max(0, i - 3), i));
+	return arr.reverse().join(",") + "." + dec;
 };
 
 // Export store
@@ -58,16 +59,40 @@ export const useItemStore = defineStore("item", {
 		}
     }),
 	getters: {
-		getCategoryLink: (state)=>((cid)=>(typeof cid) === "number" ? `/search?category=${cid}` : "#"),
-		getItemLink: (state)=>((iid)=>(typeof iid) === "number" ? `/item/${iid}` : "#"),
-		getPrice: (state)=>((item)=>{
+		getCategoryLink: ()=>((cid)=>(typeof cid) === "number" ? `/search?category=${cid}` : "#"),
+		getItemLink: ()=>((iid)=>(typeof iid) === "number" ? `/item/${iid}` : "#"),
+		getPrice: ()=>((item)=>{
 			if (item.sale === undefined)
 				return convert(item.price);
 			else 
 				return `<del style="color:gray">${convert(item.price)}</del> <span style="color:red">${convert(item.sale)}</span>`;
-		})
+		}),
+		getMainPic: ()=>((item)=>item.aid === undefined ? null : vMarkBackendAPI + "api/attachment/get?aid=" + item.aid)
 	},
 	actions: {
-		init: async function() {}
+		init: async function() {
+			let ret = (await axios.get(vMarkBackendAPI + "api/category/")).data;
+			this.category = ret.data.filter((value)=>value.parent === undefined);
+			let children = ret.data.filter((value)=>value.parent !== undefined);
+			children.forEach((v1)=>{
+				this.category.forEach((v2)=>{
+					if (v2.cid === v1.parent) {
+						if (v2.sub === undefined)
+							v2.sub = [v1];
+						else 
+							v2.sub.push(v1);
+					}
+				});
+			});
+			
+			ret = (await axios.get(vMarkBackendAPI + "api/item/count")).data;
+			this.pageNav.total = Math.trunc(ret.data / 20 + 1);
+			if (this.pageNav.total === 1)
+				this.pageNav.next = undefined;
+
+			ret = (await axios.get(vMarkBackendAPI + "api/item/")).data;
+			this.items = ret.data;
+			console.log(ret);
+		}
 	}
 });
