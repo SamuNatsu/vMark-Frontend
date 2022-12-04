@@ -60,7 +60,7 @@ export const useItemStore = defineStore("item", {
     }),
 	getters: {
 		getCategoryLink: ()=>((cid)=>(typeof cid) === "number" ? `/search?category=${cid}` : "#"),
-		getItemLink: ()=>((iid)=>(typeof iid) === "number" ? `/item/${iid}` : "#"),
+		getItemLink: ()=>((iid)=>(typeof iid) === "number" ? `/item?iid=${iid}` : "#"),
 		getPrice: ()=>((item)=>{
 			if (item.sale === undefined)
 				return convert(item.price);
@@ -92,7 +92,6 @@ export const useItemStore = defineStore("item", {
 
 			ret = (await axios.get(vMarkBackendAPI + "api/item/")).data;
 			this.items = ret.data;
-			console.log(ret);
 		}
 	}
 });

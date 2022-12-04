@@ -7,6 +7,8 @@ import LoginView from "./views/LoginView.vue";
 import RegisterView from "./views/RegisterView.vue";
 import UserView from "./views/UserView.vue";
 import AdminView from "./views/AdminView.vue";
+import ItemView from "./views/ItemView.vue";
+import CartView from "./views/CartView.vue";
 
 // Create router
 const router = createRouter({
@@ -41,10 +43,10 @@ const router = createRouter({
             path: "/admin",
             name: "admin",
             component: AdminView
-        }/*
+        },
         {
-            path: "item",
-            name: "item"
+            path: "/item",
+            name: "item",
             component: ItemView
         },
         {
@@ -52,7 +54,6 @@ const router = createRouter({
             name: "cart",
             component: CartView
         }
-        */
 	]
 });
 

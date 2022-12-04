@@ -10,22 +10,41 @@
 			"back": "回到主页"
 		},
 		"main": {
+			"dashboard": {
+				"title": {
+					"statistic": "统计信息"
+				}
+			},
 			"user": {
-				"refresh": "重置列表",
-				"search": "搜索用户",
-				"account": "账户名",
-				"name": "昵称",
-				"default_name": "（未设置）",
-				"op": "操作",
-				"rename": "设置昵称",
-				"reset_password": "重置密码",
-				"permit": "设置权限",
-				"delete": "删除用户",
-				"total": "共有 {0} 条记录，共 {1} 页",
+				"list": {
+					"title": "用户列表",
+					"refresh": "重置列表",
+					"search_box": "输入账户名或昵称",
+					"search": "搜索用户",
+					"account": "账户名",
+					"name": "昵称",
+					"default_name": "（未设置）",
+					"op": "操作",
+					"rename": "设置昵称",
+					"reset_password": "重置密码",
+					"permit": "设置权限",
+					"delete": "删除用户",
+					"total": "共有 {0} 条记录，共 {1} 页，目前第 {2} 页",
+					"jump": "到",
+					"page": "页",
+					"to": "跳转"
+				},
+				"register": {
+					"title": "注册新用户",
+					"account": "账户名",
+					"password": "密码",
+					"captcha": "验证码",
+					"submit": "注册",
+					"refresh": "点击刷新验证码"
+				},
 				"message": {
-					"delete": {
-						"confirm": "确定要删除 uid 为 {0} 的用户吗？",
-						"success": "用户已删除"
+					"search": {
+						"empty": "请输入搜索内容"
 					},
 					"rename": {
 						"prompt": "输入新昵称（长度小于 30）",
@@ -34,10 +53,25 @@
 					"reset_password": {
 						"confirm": "确定要将 uid 为 {0} 的用户密码重置为 123456 吗？",
 						"success": "密码已重置"
+					},
+					"set_privilege": {
+						"prompt": "设置 uid 为 {0} 的用户权限为：\n（0：用户，1：管理员）",
+						"invalid": "权限值不合法",
+						"success": "权限已设置"
+					},
+					"delete": {
+						"confirm": "确定要删除 uid 为 {0} 的用户吗？",
+						"success": "用户已删除"
+					},
+					"register": {
+						"success": "用户已注册"
 					}
 				}
 			}
 		}
+	},
+	"captcha": {
+		"refresh": "点击刷新验证码"
 	},
 	"topbar": {
 		"welcome": "欢迎回来，{0}",
@@ -77,6 +111,13 @@
 		},
 		"submit": "注册账号"
 	},
+	"item_select": {
+		"max": "最多可选 {0} 个"
+	},
+	"item": {
+		"add_cart": "添加至购物车",
+		"cart_added": "已添加至购物车"
+	},
 	"message": {
 		"auth": {
 			"already_login": "已登录，请勿重复登录"
@@ -96,7 +137,9 @@
 			"new_name": "新昵称不合法"
 		},
 		"fail": {
-			"login": "登录失败，请检查账号和密码"
+			"account_duplicated": "账号名重复",
+			"login": "登录失败，请检查账号和密码",
+			"permission": "权限不足"
 		}
 	}
 }
