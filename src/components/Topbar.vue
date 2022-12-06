@@ -2,34 +2,27 @@
 import { computed } from "vue";
 import { useRouter } from "vue-router";
 
-// Stores
-import { useI18NStore } from "../pinia/I18N";
-import { useUserStore } from "../pinia/User";
+import stores from "../pinia";
 
-// Components
 import Dropdown from "./Dropdown.vue";
 
-// Router
 const router = useRouter();
 
-// I18N store
-const I18N = useI18NStore();
-await I18N.init();
+const i18n = stores.i18n;
+const user = stores.user;
 
-// User store
-const user = useUserStore();
-await user.init();
-
-// Language dropdown menu properties
 const dropdownButton = computed(()=>{
 	let imgEl = '<img src="/svg/language.svg" style="margin-right: 10px; height:calc(.7em + 20px)"/>';
-	let textEl = `<div>${I18N.getCurrentName}</div>`;
+	let textEl = `<div>${i18n.getCurrentName}</div>`;
 	return imgEl + textEl;
 });
-const dropdownList = computed(()=>I18N.getIndexValues.map((value)=>({innerHtml: value})));
-const dropdownAction = (item, id)=>I18N.switchLang(I18N.getIndexKeys[id]);
+const dropdownList = computed(()=>
+	i18n.getIndexValues.map(
+		(value)=>({innerHtml: value})
+	)
+);
+const dropdownAction = (item, id)=>i18n.switchLang(i18n.getIndexKeys[id]);
 
-// Logout
 const logout = ()=>{
 	user.logout();
 	router.push({name: "index"});
@@ -41,34 +34,34 @@ const logout = ()=>{
 	<div class="topbar">
 		<!-- Welcome message (Login only) -->
 		<div v-if="user.isLogined" class="topbar__welcome">
-			{{ I18N.getLang("topbar.welcome").format(user.getName || user.getAccount) }}
+			{{ i18n.getLang("topbar.welcome").format(user.getName || user.getAccount) }}
 		</div>
 
 		<div v-if="user.isLogined" class="topbar__vr"></div>
 
 		<!-- User center entry (Login only) -->
 		<div v-if="user.isLogined" class="topbar__btn">
-			<RouterLink to="user">{{ I18N.getLang("topbar.center") }}</RouterLink>
+			<RouterLink to="user">{{ i18n.getLang("topbar.center") }}</RouterLink>
 		</div>
 
 		<!-- Admin center entry (Login only, admin only) -->
 		<div v-if="user.isLogined && user.isAdmin" class="topbar__btn">
-			<RouterLink to="admin">{{ I18N.getLang("topbar.admin") }}</RouterLink>
+			<RouterLink to="admin">{{ i18n.getLang("topbar.admin") }}</RouterLink>
 		</div>
 
 		<!-- Logout (Login only) -->
 		<div v-if="user.isLogined" class="topbar__btn">
-			<a href="#" @click="logout()">{{ I18N.getLang("topbar.logout") }}</a>
+			<a href="#" @click="logout()">{{ i18n.getLang("topbar.logout") }}</a>
 		</div>
 
 		<!-- Login entry (No login only) -->
 		<div v-if="!user.isLogined" class="topbar__btn">
-			<RouterLink to="login">{{ I18N.getLang("topbar.login") }}</RouterLink>
+			<RouterLink to="login">{{ i18n.getLang("topbar.login") }}</RouterLink>
 		</div>
 
 		<!-- Register entry (No login only) -->
 		<div v-if="!user.isLogined" class="topbar__btn">
-			<RouterLink to="register">{{ I18N.getLang("topbar.register") }}</RouterLink>
+			<RouterLink to="register">{{ i18n.getLang("topbar.register") }}</RouterLink>
 		</div>
 
 		<div class="topbar__vr"></div>

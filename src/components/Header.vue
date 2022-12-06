@@ -3,35 +3,23 @@ import { ref } from "vue";
 import { storeToRefs } from "pinia";
 import { useRouter } from "vue-router";
 
-// Stores
-import { useI18NStore } from "../pinia/I18N";
-import { useSkinStore } from "../pinia/Skin";
+import stores from "../pinia";
 
-// Router
 const router = useRouter();
 
-// I18N store
-const I18N = useI18NStore();
-await I18N.init();
+const i18n = stores.i18n;
+const skin = stores.skin;
 
-// Skin store
-const skin = useSkinStore();
-await skin.init();
 const { header } = storeToRefs(skin);
 
-// Title click
-const titleClick = ()=>location.href = location.origin;
+const titleClick = ()=>router.push({name: "index"})
 
-// Search click
 const searchText = ref("");
 const searchClick = ()=>router.push({
     name: "search",
-    query: {
-        t: searchText.value
-    }
+    query: {s: searchText.value}
 });
 
-// Default
 const defaultStyle = "font-size: 4em; font-weight: bold";
 const defaultInnerHtml = '<span style="color:red">v</span><span>Mark</span>';
 </script>
@@ -53,12 +41,12 @@ const defaultInnerHtml = '<span style="color:red">v</span><span>Mark</span>';
                 v-model="searchText"
                 class="header__searchbox__input" 
                 type="text" 
-                :placeholder="I18N.getLang('header.searchbox.input')"
+                :placeholder="i18n.getLang('header.searchbox.input')"
             />
             <!-- Search button -->
             <button 
                 class="header__searchbox__button" 
-                :title="I18N.getLang('header.searchbox.button')"
+                :title="i18n.getLang('header.searchbox.button')"
                 @click="searchClick"
             >
                 <img 

@@ -2,41 +2,41 @@
 import { defineProps, ref, defineExpose } from 'vue';
 import { useI18NStore } from '../pinia/I18N';
 
-const props = defineProps(['max', 'cnt'])
+const props = defineProps(['max'])
 
 const i18n = useI18NStore();
 await i18n.init();
 
-const cnt = ref(1);
+const count = ref(1);
 const desc = ()=>{
-    if (cnt.value > 1)
-        --cnt.value;
+    if (count.value > 1)
+        --count.value;
 };
 const restrain = ()=>{
-    if (!/^\d+$/.test(cnt.value)) {
-        cnt.value = 1;
+    if (!/^\d+$/.test(count.value)) {
+        count.value = 1;
         return;
     }
 
-    if (cnt.value < 1)
-        cnt.value = 1;
-    if (cnt.value > props.max)
-        cnt.value = props.max;
+    if (count.value < 1)
+        count.value = 1;
+    if (count.value > props.max)
+        count.value = props.max;
 };
 const incr = ()=>{
-    if (cnt.value < props.max)
-        ++cnt.value;
+    if (count.value < props.max)
+        ++count.value;
 }
 
-defineExpose({cnt})
+defineExpose({count})
 </script>
 
 <template>
     <div class="wrapper">
-        <div>{{ i18n.getLang("item_select.max").format(props.max) }}</div>
+        <div>{{ i18n.getLang("item_select.text").format(props.max) }}</div>
         <div class="selector">
             <div class="selector__desc" @click="desc">-</div>
-            <input class="selector__input" type="text" v-model="cnt" @blur="restrain()"/>
+            <input class="selector__input" type="text" v-model="count" @blur="restrain()"/>
             <div class="selector__incr" @click="incr">+</div>
         </div>
     </div>

@@ -1,25 +1,19 @@
 <script setup>
 import { computed } from "@vue/reactivity";
 import { storeToRefs } from "pinia";
+import { onMounted } from "vue";
 import { onBeforeRouteUpdate, useRoute, useRouter } from "vue-router";
 
-// Store
-import { useI18NStore } from "../pinia/I18N";
-import { useItemStore } from "../pinia/Item";
+import stores from "../pinia";
 
-// Router
 const route = useRoute();
 const router = useRouter();
 
-// I18N store
-const i18n = useI18NStore();
-await i18n.init();
+const i18n = stores.i18n;
+const item = stores.item;
 
-// Item store
-const item = useItemStore();
 const { items, pageNav } = storeToRefs(item);
 
-// Page navigation
 const pageNavLast = computed(()=>pageNav.value.last ? i18n.getLang("pageNav.last") : "");
 const pageNavNext = computed(()=>pageNav.value.next ? i18n.getLang("pageNav.next") : "");
 const pageNavJump = (page)=>{
@@ -31,11 +25,16 @@ const pageNavJump = (page)=>{
     });
 };
 
-// On route update
-onBeforeRouteUpdate((to)=>{
+onBeforeRouteUpdate(async (to)=>{
     // Todo: update items
     pageNav.value.current = parseInt(to.query.p ?? "1");
+    item.update(to.query);
 });
+
+onMounted(async ()=>{
+    pageNav.value.current = parseInt(route.query.p ?? "1");
+    await item.update(route.query);
+})
 </script>
 
 <template>

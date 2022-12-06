@@ -84,13 +84,23 @@ export const useItemStore = defineStore("item", {
 					}
 				});
 			});
-			
+
 			ret = (await axios.get(vMarkBackendAPI + "api/item/count")).data;
 			this.pageNav.total = Math.trunc(ret.data / 20 + 1);
 			if (this.pageNav.total === 1)
 				this.pageNav.next = undefined;
 
 			ret = (await axios.get(vMarkBackendAPI + "api/item/")).data;
+			this.items = ret.data;
+		},
+		update: async function(data) {
+			let qstr = "";
+			Object.keys(data).forEach((k)=>{
+				if (qstr.length !== 0)
+					qstr += '&';
+				qstr += encodeURI(k) + '=' + encodeURI(data[k])
+			})
+			let ret = (await axios.get(vMarkBackendAPI + "api/item/?" + qstr)).data;
 			this.items = ret.data;
 		}
 	}

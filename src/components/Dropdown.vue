@@ -5,11 +5,8 @@ const props = defineProps({
     buttonStyle: String,                // Button style <String>
     listStyle: String,                  // List style <String>
     itemDefaultStyle: String,           // Item default style <String>
-
     buttonInnerHtml: String,            // Button inner html <String>
-
     list: Array,                        // Item list <Array: Object> <Object: innerHtml, style, action>
-
     itemDefaultAction: {                // Item default action
         type: Function,
         required: true

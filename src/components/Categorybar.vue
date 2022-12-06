@@ -1,22 +1,13 @@
 <script setup>
 import { storeToRefs } from "pinia";
 
-// Store
-import { useItemStore } from "../pinia/Item";
-import { useSkinStore } from "../pinia/Skin";
+import stores from "../pinia";
 
-// Item store
-const item = useItemStore();
-await item.init();
+const item = stores.item;
+const skin = stores.skin;
+
 const { category } = storeToRefs(item);
-
-// Skin store
-const skin = useSkinStore();
-await skin.init();
 const { topAd } = storeToRefs(skin);
-
-// Default top advertisement
-const defaultAd = '<div style="background:repeating-linear-gradient(-45deg,#f74545,#f74545 8px,#ffffff 8px,#ffffff 40px);height:100%;width:100%"></div>';
 </script>
 
 <template>
@@ -45,7 +36,7 @@ const defaultAd = '<div style="background:repeating-linear-gradient(-45deg,#f745
             </div>
         </div>
         <!-- Side advertisement -->
-        <div class="category__ad" v-html="topAd || defaultAd"></div>
+        <div class="category__ad" v-html="topAd"></div>
     </div>
 </template>
 

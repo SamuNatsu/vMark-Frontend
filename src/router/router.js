@@ -1,14 +1,14 @@
 import { createRouter, createWebHistory } from "vue-router";
 
 // View imports
-import IndexView from "./views/IndexView.vue";
-import SearchView from "./views/SearchView.vue";
-import LoginView from "./views/LoginView.vue";
-import RegisterView from "./views/RegisterView.vue";
-import UserView from "./views/UserView.vue";
-import AdminView from "./views/AdminView.vue";
-import ItemView from "./views/ItemView.vue";
-import CartView from "./views/CartView.vue";
+import IndexView from "../views/IndexView.vue";
+import SearchView from "../views/SearchView.vue";
+import LoginView from "../views/LoginView.vue";
+import RegisterView from "../views/RegisterView.vue";
+import UserView from "../views/UserView.vue";
+import AdminView from "../views/AdminView.vue";
+import ItemView from "../views/ItemView.vue";
+import CartView from "../views/CartView.vue";
 
 // Create router
 const router = createRouter({
