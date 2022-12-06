@@ -1,5 +1,6 @@
 import { defineStore } from "pinia";
 import axios from "axios";
+import stores from "."
 
 // Export store
 export const useUserStore = defineStore("user", {
@@ -46,6 +47,22 @@ export const useUserStore = defineStore("user", {
         logout: async function() {
             await axios.post(vMarkBackendAPI + "api/auth/logout");
             this.user = null;
+        },
+        reg: async function(account, password, captcha, message, router) {
+            console.log(account)
+            console.log(password)
+            console.log(captcha)
+            let ret = (await axios.post(
+                vMarkBackendAPI + "api/user/register", 
+                {account, password, captcha}, 
+                {headers: {"Content-Type": "application/x-www-form-urlencoded"}})).data;
+
+            if (ret.status === "failed") {
+                message.value = ret.message;
+                return;
+            }
+            alert(stores.i18n.getLang("register.success"));
+            router.push({name: "login"})
         }
     }
 });

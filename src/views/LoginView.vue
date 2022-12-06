@@ -3,10 +3,7 @@ import { computed, ref } from "@vue/reactivity";
 import { storeToRefs } from "pinia";
 import { onBeforeRouteUpdate, useRouter } from "vue-router";
 
-// Stores
-import { useI18NStore } from "../pinia/I18N";
-import { useSkinStore } from "../pinia/Skin";
-import { useUserStore } from "../pinia/User";
+import stores from "../pinia";
 
 // Components
 import Topbar from "../components/Topbar.vue";
@@ -16,18 +13,11 @@ import Footer from "../components/Footer.vue";
 // Rooter
 const router = useRouter();
 
-// I18N store
-const i18n = useI18NStore();
-await i18n.init();
+const i18n = stores.i18n;
+const skin = stores.skin;
+const user = stores.user;
 
-// Skin store
-const skin = useSkinStore();
-await skin.init();
 const { title } = storeToRefs(skin);
-
-// User store
-const user = useUserStore();
-await user.init();
 
 // Set title
 document.querySelector("title").innerHTML = (title.value.login || "Login - vMark");

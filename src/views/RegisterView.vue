@@ -1,26 +1,35 @@
 <script setup>
+import { ref } from "vue"
 import { storeToRefs } from "pinia";
 
-// Stores
-import { useI18NStore } from "../pinia/I18N";
-import { useSkinStore } from "../pinia/Skin";
+import stores from "../pinia";
 
-// Components
 import Topbar from "../components/Topbar.vue";
 import Header from "../components/Header.vue";
 import Footer from "../components/Footer.vue";
+import Captcha from "../components/Captcha.vue"
+import { useRouter } from "vue-router";
 
-// I18N store
-const i18n = useI18NStore();
-await i18n.init();
+const router = useRouter()
 
-// Skin store
-const skin = useSkinStore();
-await skin.init();
+const i18n = stores.i18n;
+const skin = stores.skin;
+const user = stores.user;
+
 const { title } = storeToRefs(skin);
 
 // Set title
 document.querySelector("title").innerHTML = (title.value.register || "Register - vMark");
+
+// Register
+const account = ref("")
+const pass = ref("")
+const captcha = ref("")
+const message = ref("")
+const reg = async ()=>{
+    let p = CryptoJS.SHA256(pass.value).toString();
+    await user.reg(account.value, p, captcha.value.toUpperCase(), message, router)
+}
 </script>
 
 <template>
@@ -30,23 +39,30 @@ document.querySelector("title").innerHTML = (title.value.register || "Register -
     <!-- Login container -->
     <div class="register-wrapper">
         <div class="register">
+            <div class="register__warning">{{ i18n.getLang(message) }}</div>
+
             <!-- Title -->
             <div class="register__title">{{ i18n.getLang("register.title") }}</div>
 
             <!-- Input -->
             <div class="register__input">
                 <div>
-                    <input type="text" :placeholder="i18n.getLang('register.account.title')"/>
+                    <input type="text" :placeholder="i18n.getLang('register.account.title')" v-model="account"/>
                     <div class="register__input__desc">{{ i18n.getLang('register.account.desc') }}</div>
                 </div>
                 <div>
-                    <input type="password" :placeholder="i18n.getLang('register.password.title')"/>
+                    <input type="password" :placeholder="i18n.getLang('register.password.title')" v-model="pass"/>
                     <div class="register__input__desc">{{ i18n.getLang('register.password.desc') }}</div>
+                </div>
+                <div>
+                    <input type="text" :placeholder="i18n.getLang('register.captcha.title')" v-model="captcha"/>
                 </div>
             </div>
 
+            <Captcha/>
+
             <!-- Submit -->
-            <button class="register__submit">{{ i18n.getLang("register.submit") }}</button>
+            <button class="register__submit" @click="reg()">{{ i18n.getLang("register.submit") }}</button>
         </div>
     </div>
 
@@ -74,6 +90,11 @@ document.querySelector("title").innerHTML = (title.value.register || "Register -
     }
     .register>div {
         margin: 10px auto;
+    }
+
+    .register__warning {
+        color: red;
+        font-size: small;
     }
 
     .register__title {
@@ -114,6 +135,7 @@ document.querySelector("title").innerHTML = (title.value.register || "Register -
         border: none;
         border-radius: 20px;
         cursor: pointer;
+        margin: 20px 0;
         padding: 5px 15px;
     }
     .register__submit:hover {

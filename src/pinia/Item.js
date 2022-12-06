@@ -22,6 +22,7 @@ const convert = (price)=>{
 // Export store
 export const useItemStore = defineStore("item", {
     state: ()=>({
+		initialize: false,
 		category: [
 			{
 				name: "XXXXX",
@@ -59,7 +60,7 @@ export const useItemStore = defineStore("item", {
 		}
     }),
 	getters: {
-		getCategoryLink: ()=>((cid)=>(typeof cid) === "number" ? `/search?category=${cid}` : "#"),
+		getCategoryLink: ()=>((cid)=>(typeof cid) === "number" ? `/search?cid=${cid}` : "#"),
 		getItemLink: ()=>((iid)=>(typeof iid) === "number" ? `/item?iid=${iid}` : "#"),
 		getPrice: ()=>((item)=>{
 			if (item.sale === undefined)
@@ -85,15 +86,12 @@ export const useItemStore = defineStore("item", {
 				});
 			});
 
-			ret = (await axios.get(vMarkBackendAPI + "api/item/count")).data;
-			this.pageNav.total = Math.trunc(ret.data / 20 + 1);
-			if (this.pageNav.total === 1)
-				this.pageNav.next = undefined;
-
-			ret = (await axios.get(vMarkBackendAPI + "api/item/")).data;
-			this.items = ret.data;
+			this.initialize = true;
 		},
 		update: async function(data) {
+			if (this.initialize === false)
+				await this.init();
+
 			let qstr = "";
 			Object.keys(data).forEach((k)=>{
 				if (qstr.length !== 0)

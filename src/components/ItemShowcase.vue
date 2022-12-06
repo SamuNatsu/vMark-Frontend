@@ -14,32 +14,20 @@ const item = stores.item;
 
 const { items, pageNav } = storeToRefs(item);
 
-const pageNavLast = computed(()=>pageNav.value.last ? i18n.getLang("pageNav.last") : "");
-const pageNavNext = computed(()=>pageNav.value.next ? i18n.getLang("pageNav.next") : "");
-const pageNavJump = (page)=>{
-    router.push({
-        query: {
-            ...route.query,
-            p: "" + page
-        }
-    });
-};
-
-onBeforeRouteUpdate(async (to)=>{
-    // Todo: update items
-    pageNav.value.current = parseInt(to.query.p ?? "1");
-    item.update(to.query);
-});
-
 onMounted(async ()=>{
     pageNav.value.current = parseInt(route.query.p ?? "1");
     await item.update(route.query);
+})
+onBeforeRouteUpdate(async (to)=>{
+    if (to.path === route.path) 
+        await item.update(to.query);
 })
 </script>
 
 <template>
     <!-- Showcase -->
     <div class="showcase">
+        <h1 v-if="(items || []).length === 0">{{ i18n.getLang("item.not_found") }}</h1>
         <!-- Item -->
         <div v-for="i in items" class="showcase__item">
             <div class="showcase__item__wrapper">
@@ -67,66 +55,6 @@ onMounted(async ()=>{
                 </div>
             </div>
         </div>
-    </div>
-    <!-- Page navigation -->
-    <div class="page-nav" v-if="pageNav.last || pageNav.next">
-        <!-- Previous page -->
-        <div class="page-nav__btn"><RouterLink :to="pageNav.last || '#'">{{ pageNavLast }}</RouterLink></div>
-
-        <!-- Page labels -->
-        <div class="page-nav__label">
-            <!-- First -->
-            <div 
-                class="page-nav__label__btn"
-                :class="{'page-nav__label__btn--current': pageNav.current === 1}"
-                @click="pageNavJump(1)"
-            >
-                1
-            </div>
-
-            <div v-if="pageNav.current > 3">...</div>
-
-            <!-- Previous -->
-            <div 
-                v-if="pageNav.current > 2" 
-                class="page-nav__label__btn"
-                @click="pageNavJump(pageNav.current - 1)"
-            >
-                {{ pageNav.current - 1 }}
-            </div>
-
-            <!-- Current -->
-            <div 
-                v-if="pageNav.current !== 1 && pageNav.current != pageNav.total"
-                class="page-nav__label__btn--current"
-            >
-                {{ pageNav.current }}
-            </div>
-
-            <!-- Next -->
-            <div
-                v-if="pageNav.total - pageNav.current > 1" 
-                class="page-nav__label__btn"
-                @click="pageNavJump(pageNav.current + 1)"
-            >
-                {{ pageNav.current + 1 }}
-            </div>
-
-            <div v-if="pageNav.total - pageNav.current > 2">...</div>
-
-            <!-- Last -->
-            <div 
-                v-if="pageNav.total > 1"
-                class="page-nav__label__btn"
-                :class="{'page-nav__label__btn--current': pageNav.current === pageNav.total}"
-                @click="pageNavJump(pageNav.total)"
-            >
-                {{ pageNav.total }}
-            </div>
-        </div>
-
-        <!-- Next page -->
-        <div class="page-nav__btn"><RouterLink :to="pageNav.next || '#'">{{ pageNavNext }}</RouterLink></div>
     </div>
 </template>
 
