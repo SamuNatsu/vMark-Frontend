@@ -3,27 +3,23 @@ import { ref, computed } from "vue";
 import { storeToRefs } from "pinia";
 import { useRoute, useRouter } from "vue-router";
 
-// Stores
-import { useI18NStore } from "../pinia/I18N";
-import { useSkinStore } from "../pinia/Skin";
+import stores from "../pinia";
 
 // Components
 import Topbar from '../components/Topbar.vue';
 import Footer from "../components/Footer.vue";
-import axios from "axios";
 import AdminUser from "./admin/AdminUser.vue";
+import AdminAttachment from "./admin/AdminAttachment.vue"
 
 // Router
 const route = useRoute();
 const router = useRouter();
 
 // I18N store
-const i18n = useI18NStore();
-await i18n.init();
+const i18n = stores.i18n;
 
 // Skin store
-const skin = useSkinStore();
-await skin.init();
+const skin = stores.skin;
 const { title } = storeToRefs(skin);
 
 // Set title
@@ -97,10 +93,8 @@ const backSelect = ()=>router.push({name: "index"});
                 <hr/>
             </div>
 
-            <div v-if="(current == 4)">
-                <h1>{{ i18n.getLang("admin.menu.attachment") }}</h1>
-                <hr/>
-            </div>
+            <!-- Attachment manage -->
+            <AdminAttachment v-if="current == 4"/>
 
             <div v-if="(current == 5)">
                 <h1>{{ i18n.getLang("admin.menu.option") }}</h1>

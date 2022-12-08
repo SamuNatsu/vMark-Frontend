@@ -59,6 +59,8 @@ const userSearch = async ()=>{
 
 const userRename = async (uid)=>{
     let inp = prompt(i18n.getLang("admin.main.user.message.rename.prompt"));
+    if (inp === null)
+        return;
     if (inp.length > 30) {
         alert(i18n.getLang("message.invalid.new_name"));
         return;
@@ -77,6 +79,8 @@ const userRename = async (uid)=>{
 
 const setPrivilege = async (uid)=>{
     let inp = prompt(i18n.getLang("admin.main.user.message.set_privilege.prompt"));
+    if (inp === null)
+        return;
     if (inp !== "0" && inp !== "1") {
         alert(i18n.getLang("admin.main.user.message.set_privilege.invalid"));
         return;
@@ -180,6 +184,27 @@ userRefresh();
         <h1>{{ i18n.getLang("admin.menu.user") }}</h1>
         <hr/>
 
+        <h2>{{ i18n.getLang("admin.main.user.register.title") }}</h2>
+        <div class="register">
+            <table>
+                <tr>
+                    <td>{{ i18n.getLang("admin.main.user.register.account") }}</td>
+                    <td><input type="text" v-model="regAccount"/></td>
+                </tr>
+                <tr>
+                    <td>{{ i18n.getLang("admin.main.user.register.password") }}</td>
+                    <td><input type="password" v-model="regPass"/></td>
+                </tr>
+                <tr>
+                    <td>{{ i18n.getLang("admin.main.user.register.captcha") }}</td>
+                    <td><input type="text" v-model="regCaptcha"/></td>
+                </tr>
+            </table>
+            <Captcha/>
+            <button @click="register()">{{ i18n.getLang("admin.main.user.register.submit") }}</button>
+        </div>
+        <hr/>
+
         <!-- User list -->
         <h2>{{ i18n.getLang("admin.main.user.list.title") }}</h2>
         <div class="list__opbar">
@@ -226,36 +251,8 @@ userRefresh();
         <div>
             {{ i18n
                 .getLang("admin.main.user.list.total")
-                .format(userCount, Math.trunc(userCount / 20) + ((userCount % 20) ? 1 : 0), userPage) 
+                .format(userCount) 
             }}
-        </div>
-        <div>
-            {{ i18n.getLang("admin.main.user.list.jump") }}
-            <input type="text" style="margin: 5px;width: 50px" v-model="jumpToPage"/>
-            {{ i18n.getLang("admin.main.user.list.page") }}
-            <button @click="jumpPage()">{{ i18n.getLang("admin.main.user.list.to") }}</button>
-        </div>
-        <hr/>
-
-        <!-- Register user -->
-        <h2>{{ i18n.getLang("admin.main.user.register.title") }}</h2>
-        <div class="register">
-            <table>
-                <tr>
-                    <td>{{ i18n.getLang("admin.main.user.register.account") }}</td>
-                    <td><input type="text" v-model="regAccount"/></td>
-                </tr>
-                <tr>
-                    <td>{{ i18n.getLang("admin.main.user.register.password") }}</td>
-                    <td><input type="password" v-model="regPass"/></td>
-                </tr>
-                <tr>
-                    <td>{{ i18n.getLang("admin.main.user.register.captcha") }}</td>
-                    <td><input type="text" v-model="regCaptcha"/></td>
-                </tr>
-            </table>
-            <Captcha/>
-            <button @click="register()">{{ i18n.getLang("admin.main.user.register.submit") }}</button>
         </div>
     </div>
 </template>

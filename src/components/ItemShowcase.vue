@@ -92,9 +92,14 @@ onBeforeRouteUpdate(async (to)=>{
     .showcase__item__img {
         border: 1px dashed gray;
         margin-top: 5%;
-        max-height: 70%;
+        height: 70%;
         overflow: hidden;
-        width: 90%
+        width: 90%;
+        display: flex;
+        align-items: center;
+    }
+    .showcase__item__img img {
+        width: 100%;
     }
 
     .showcase__item__info {

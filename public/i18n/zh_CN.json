@@ -17,6 +17,31 @@
 			"back": "回到主页"
 		},
 		"main": {
+			"attachment": {
+				"upload": {
+					"title": "上传附件",
+					"btn": "上传（仅接受 PNG 图像，图像大小 < 15MB）"
+				},
+				"list": {
+					"title": "附件列表",
+					"refresh": "刷新列表",
+					"thumbnail": "缩略图",
+					"info": "信息",
+					"op": "操作",
+					"name": "附件名",
+					"path": "本地路径",
+					"delete": {
+						"title": "删除",
+						"confirm": "确定要删除 aid 为 {0} 的附件吗？",
+						"success": "成功删除"
+					},
+					"rename": {
+						"title": "修改名称",
+						"prompt": "输入新名称",
+						"success": "更改成功"
+					}
+				}
+			},
 			"dashboard": {
 				"title": {
 					"statistic": "统计信息"
@@ -36,7 +61,7 @@
 					"reset_password": "重置密码",
 					"permit": "设置权限",
 					"delete": "删除用户",
-					"total": "共有 {0} 条记录，共 {1} 页，目前第 {2} 页",
+					"total": "共有 {0} 条记录",
 					"jump": "到",
 					"page": "页",
 					"to": "跳转"

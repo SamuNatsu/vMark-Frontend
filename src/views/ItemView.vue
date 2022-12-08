@@ -18,7 +18,7 @@ const router = useRouter();
 const route = useRoute();
 
 const info = ref({});
-const getImg = computed(()=>info.aid === undefined ? "/svg/item.svg" : (vMarkBackendAPI + "api/attachment/get?aid=" + info.aid));
+const getImg = computed(()=>info.value.aid === undefined ? "/svg/item.svg" : (vMarkBackendAPI + "api/attachment/get?aid=" + info.value.aid));
 
 const getPrice = computed(()=>{
     let price = info.value.price;
@@ -110,7 +110,7 @@ const addCart = ()=>{
 <style scoped>
     hr {
         border: 0;
-        border-bottom: 2px dashed gray;
+        border-bottom: 2px solid gray;
     }
 
     .main {
