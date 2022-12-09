@@ -1,40 +1,72 @@
 <script setup>
-import { computed } from "@vue/reactivity";
-import { storeToRefs } from "pinia";
-import { onMounted } from "vue";
-import { onBeforeRouteUpdate, useRoute, useRouter } from "vue-router";
+import axios from "axios";
+import { ref } from "vue";
+import { onBeforeRouteUpdate, useRoute} from "vue-router";
 
 import stores from "../pinia";
 
 const route = useRoute();
-const router = useRouter();
 
 const i18n = stores.i18n;
-const item = stores.item;
 
-const { items, pageNav } = storeToRefs(item);
+const itemList = ref([])
+const convertPrice = (x)=>{
+    let str = "" + x;
 
-onMounted(async ()=>{
-    pageNav.value.current = parseInt(route.query.p ?? "1");
-    await item.update(route.query);
-})
+    if (str.length <= 2) {
+        while (str.length < 2)
+            str = "0" + str
+        return "0." + str;
+    }
+
+    let tmp = str.substring(0, str.length - 2)
+    let arr = []
+	for (let i = tmp.length; i > 0; i -= 3)
+		arr.push(tmp.substring(Math.max(0, i - 3), i))
+    return arr.reverse().join(",") + "." + str.substring(str.length - 2)
+}
+const fetchItems = async (data)=>{
+    itemList.value = []
+
+    let qry_str = ""
+    Object.keys(data || route.query).forEach((k)=>{
+        if (qry_str.length > 0)
+            qry_str += '&'
+        qry_str += encodeURI(k) + '=' + encodeURI((data || route.query)[k])
+    })
+
+    let res = (await axios.get(vMarkBackendAPI + 'api/item/?' + qry_str)).data
+    if (res.status === "failed") {
+        alert(i18n.getLang(res.message))
+        return
+    }
+
+    res.data.forEach((v, i, a)=>{
+        a[i].url = '/item?iid=' + v.iid
+        a[i].img = v.aid === undefined ? '/svg/item.svg' : vMarkBackendAPI + 'api/attachment/get?aid=' + v.aid
+        a[i].dPrice = v.sale === undefined ? convertPrice(v.price) : '<del style="color:gray">' + convertPrice(v.price) + '</del> <span style="color:red"><b>' + convertPrice(v.sale) + '</b></span>'
+    })
+    itemList.value = res.data
+}
+await fetchItems()
+
 onBeforeRouteUpdate(async (to)=>{
-    if (to.path === route.path) 
-        await item.update(to.query);
+    if (to.path === route.path)
+        await fetchItems(to.query)
 })
 </script>
 
 <template>
     <!-- Showcase -->
     <div class="showcase">
-        <h1 v-if="(items || []).length === 0">{{ i18n.getLang("item.not_found") }}</h1>
+        <h1 v-if="itemList.length === 0">{{ i18n.getLang("item.not_found") }}</h1>
         <!-- Item -->
-        <div v-for="i in items" class="showcase__item">
+        <div v-for="i in itemList" class="showcase__item">
             <div class="showcase__item__wrapper">
                 <!-- Item image -->
                 <div class="showcase__item__img">
-                    <RouterLink :to="item.getItemLink(i.iid)" :title="i.name">
-                        <img :src="item.getMainPic(i) || '/svg/item.svg'"/>
+                    <RouterLink :to="i.url" :title="i.name">
+                        <img :src="i.img"/>
                     </RouterLink>
                 </div>
 
@@ -42,13 +74,13 @@ onBeforeRouteUpdate(async (to)=>{
                 <div class="showcase__item__info">
                     <!-- Item name -->
                     <div class="showcase__item__name">
-                        <RouterLink :to="item.getItemLink(i.iid)" :title="i.name">
+                        <RouterLink :to="i.url" :title="i.name">
                             {{ i.name }}
                         </RouterLink>
                     </div>
 
                     <!-- Item price -->
-                    <div v-html="item.getPrice(i)" class="showcase__item__price"></div>
+                    <div v-html="i.dPrice" class="showcase__item__price"></div>
 
                     <!-- Sold out -->
                     <div v-if="(i.remain === 0)" class="showcase__item__soldout">{{ i18n.getLang("message.item.sold_out") }}</div>
@@ -90,7 +122,6 @@ onBeforeRouteUpdate(async (to)=>{
     }
 
     .showcase__item__img {
-        border: 1px dashed gray;
         margin-top: 5%;
         height: 70%;
         overflow: hidden;
@@ -99,6 +130,7 @@ onBeforeRouteUpdate(async (to)=>{
         align-items: center;
     }
     .showcase__item__img img {
+        border: 1px dashed gray;
         width: 100%;
     }
 

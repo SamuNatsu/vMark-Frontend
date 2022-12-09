@@ -1,13 +1,41 @@
 <script setup>
+import axios from "axios";
 import { storeToRefs } from "pinia";
+import { ref } from "vue";
 
 import stores from "../pinia";
 
-const item = stores.item;
-const skin = stores.skin;
+const i18n = stores.i18n
+const skin = stores.skin
 
-const { category } = storeToRefs(item);
 const { topAd } = storeToRefs(skin);
+
+const categoryList = ref([])
+const fetchCategory = async ()=>{
+    let res = (await axios.get(vMarkBackendAPI + "api/category/")).data
+    if (res.status === "failed") {
+        alert(i18n.getLang(res.message))
+        return
+    }
+
+    res.data.forEach((v, i, a)=>{
+        a[i].url = '/search?cid=' + v.cid
+    })
+
+    categoryList.value = res.data.filter((v)=>v.parent === undefined)
+    res.data.filter((v)=>v.parent !== undefined).forEach((v1)=>{
+        categoryList.value.forEach((v2, i, a)=>{
+            if (v2.cid === v1.parent) {
+                if (v2.sub === undefined)
+                    a[i].sub = [v1]
+                else 
+                    a[i].sub.push(v1)
+            }
+        })
+    })
+}
+await fetchCategory()
+
 </script>
 
 <template>
@@ -17,11 +45,11 @@ const { topAd } = storeToRefs(skin);
         <div class="category__parent">
             <!-- Parent category item -->
             <div 
-                v-for="i in category" 
+                v-for="i in categoryList" 
                 class="category__parent__item" 
                 :title="i.name"
             >
-                <RouterLink :to="item.getCategoryLink(i.cid)">{{ i.name }}</RouterLink>
+                <RouterLink :to="i.url">{{ i.name }}</RouterLink>
                 <!-- Sub category list -->
                 <div v-if="i.sub" class="category__sub">
                     <!-- Sub category item -->
@@ -30,7 +58,7 @@ const { topAd } = storeToRefs(skin);
                         class="category__sub__item" 
                         :title="j.name"
                     >
-                        <RouterLink :to="item.getCategoryLink(j.cid)">{{ j.name }}</RouterLink>
+                        <RouterLink :to="j.url">{{ j.name }}</RouterLink>
                     </div>
                 </div>
             </div>

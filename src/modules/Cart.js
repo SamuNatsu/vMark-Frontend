@@ -16,14 +16,11 @@ const add = (info)=>{
     if (f === false)
         c.push({
             iid: info.iid,
-            price: info.price,
             count: info.count
         });
     lStorage.set("cart", {data: c});
 }
 
-const get = ()=>{
-
-}
+const get = ()=>lStorage.get("cart").data
 
 export const cart={add, get};

@@ -1,5 +1,4 @@
 import { useI18NStore } from "./I18N";
-import { useItemStore } from "./Item";
 import { useSkinStore } from "./Skin";
 import { useUserStore } from "./User";
 
@@ -7,7 +6,6 @@ const stores = {};
 
 export const registerStore = async ()=>{
     stores.i18n = useI18NStore();
-    stores.item = useItemStore();
     stores.skin = useSkinStore();
     stores.user = useUserStore();
 

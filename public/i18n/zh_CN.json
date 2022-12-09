@@ -152,7 +152,8 @@
 	},
 	"message": {
 		"auth": {
-			"already_login": "已登录，请勿重复登录"
+			"already_login": "已登录，请勿重复登录",
+			"no_login": "请先登录"
 		},
 		"captcha": {
 			"timeout": "验证码超时，请点击刷新",
@@ -173,5 +174,11 @@
 			"login": "登录失败，请检查账号和密码",
 			"permission": "权限不足"
 		}
+	},
+	"cart": {
+		"total": "总价："
+	},
+	"title": {
+		"cart": "购物车"
 	}
 }

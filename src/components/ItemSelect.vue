@@ -1,5 +1,5 @@
 <script setup>
-import { defineProps, ref, defineExpose } from 'vue';
+import { ref } from 'vue';
 import { useI18NStore } from '../pinia/I18N';
 
 const props = defineProps(['max'])
@@ -53,6 +53,14 @@ defineExpose({count})
         margin: 10px 0;
         width: fit-content;
     }
+    .selector>div {
+        user-select: none;
+    }
+    .selector>div:hover {
+        background: #000;
+        color: #fff;
+    }
+
     .selector__desc {
         border: 2px solid #000;
         border-bottom-left-radius: 10px;

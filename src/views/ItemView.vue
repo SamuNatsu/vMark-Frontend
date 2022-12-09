@@ -7,12 +7,13 @@ import ItemSelect from '../components/ItemSelect.vue';
 import { onMounted, ref } from 'vue';
 import { useRoute, useRouter } from 'vue-router';
 import axios from 'axios';
-import { useI18NStore } from '../pinia/I18N';
 import { computed } from '@vue/reactivity';
 import { cart } from "../modules/Cart"
 
-const i18n = useI18NStore();
-await i18n.init();
+import stores from '../pinia';
+
+const i18n = stores.i18n
+const user = stores.user
 
 const router = useRouter();
 const route = useRoute();
@@ -59,6 +60,19 @@ const getSale = computed(()=>{
 
 const itemSelectRef = ref(null);
 
+const addCart = ()=>{
+    if (!user.isLogined) {
+        alert(i18n.getLang("message.auth.no_login"))
+        return
+    }
+
+    cart.add({
+        iid: info.value.iid,
+        count: itemSelectRef.value.count
+    });
+    alert(i18n.getLang("item.cart_added"))
+}
+
 onMounted(async ()=>{
     let iid = route.query.iid;
     let ret = (await axios.get(vMarkBackendAPI + "api/item/?iid=" + iid)).data;
@@ -69,15 +83,6 @@ onMounted(async ()=>{
     }
     info.value = ret.data;
 });
-
-const addCart = ()=>{
-    cart.add({
-        iid: info.value.iid,
-        price: info.value.sale || info.value.price,
-        count: itemSelectRef.value.cnt
-    });
-    alert(i18n.getLang("item.cart_added"))
-}
 </script>
 
 <template>
@@ -85,7 +90,7 @@ const addCart = ()=>{
     <Header/>
 
     <div class="main">
-        <img class="item__img" :src="getImg"/>
+        <img class="item__img" :src="getImg" @click=""/>
         <div class="item__info">
             <h1>{{ info.name }}</h1>
             <h2>
@@ -162,6 +167,7 @@ const addCart = ()=>{
         margin: 20px 0;
         width: fit-content;
         transition: all .2s;
+        user-select: none;
     }
     .item__add_cart:hover {
         background: #f77;
