@@ -2,9 +2,10 @@
 import Topbar from '../components/Topbar.vue';
 import Header from '../components/Header.vue';
 import Footer from '../components/Footer.vue';
+import ItemSelect from '../components/ItemSelect.vue';
 
 import { cart } from '../modules/Cart';
-import { ref, watch } from 'vue';
+import { ref, watch, computed } from 'vue';
 import axios from 'axios';
 import stores from '../pinia';
 import { storeToRefs } from 'pinia';
@@ -14,10 +15,17 @@ const skin = stores.skin
 const { lang } = storeToRefs(i18n)
 const { sitename } = storeToRefs(skin)
 
-watch(lang, ()=>document.querySelector("title").innerHTML = i18n.getLang("title.cart") + " | " + (sitename || "vMark"))
-document.querySelector("title").innerHTML = i18n.getLang("title.cart") + " | " + (sitename || "vMark")
+watch(lang, ()=>document.querySelector("title").innerHTML = i18n.getLang("title.cart") + " | " + (sitename.value || "vMark"))
+document.querySelector("title").innerHTML = i18n.getLang("title.cart") + " | " + (sitename.value || "vMark")
 
 const itemList = ref([])
+const totalPrice = computed(()=>{
+    let tot = 0
+    itemList.value.forEach((v)=>{
+        tot += (v.sale === undefined ? v.price :v.sale) * v.count
+    })
+    return tot
+})
 const convertPrice = (x)=>{
     let str = "" + x;
 
@@ -33,6 +41,12 @@ const convertPrice = (x)=>{
 		arr.push(tmp.substring(Math.max(0, i - 3), i))
     return arr.reverse().join(",") + "." + str.substring(str.length - 2)
 }
+const updateItem = (iid, idx)=>{
+    let itm = cart.get().filter((v)=>v.iid === iid)[0]
+    let tmp = itemList.value.slice(idx, idx + 1)[0]
+    tmp.count = itm.count
+    itemList.value = itemList.value.slice(0, idx).concat(tmp).concat(itemList.value.slice(idx + 1))
+}
 const fetchItems = async ()=>{
     itemList.value = []
 
@@ -45,6 +59,11 @@ const fetchItems = async ()=>{
         ti.url = '/item?iid=' + ti.iid
         ti.img = ti.aid === undefined ? '/svg/item.svg' : vMarkBackendAPI + 'api/attachment/get?aid=' + ti.aid
         ti.dPrice = ti.sale === undefined ? convertPrice(ti.price) : '<del style="color:gray">' + convertPrice(ti.price) + '</del> <span style="color:red"><b>' + convertPrice(ti.sale) + '</b></span>'
+
+        if (ti.count > res.data.remain) {
+            ti.count = res.data.remain
+            cart.set(ti.iid, {count: ti.count})
+        }
 
         itemList.value.push(ti)
     })
@@ -60,15 +79,18 @@ await fetchItems()
     <div class="wrapper">
         <h1 v-if="itemList.length === 0">{{ i18n.getLang("cart.empty") }}</h1>
         <table class="list" v-if="itemList.length !== 0">
-            <tr v-for="i in itemList">
+            <tr v-for="(i, index) in itemList">
                 <td class="list__img"><img :src="i.img"/></td>
                 <td class="list__name"><a :href="i.url" target="_blank">{{ i.name }}</a></td>
-                <td>{{ i.count }}</td>
+                <td class="list__count"><ItemSelect :refresh="fetchItems" :update="()=>updateItem(i.iid, index)" :max="i.remain" :cur="i.count" :iid="i.iid" :cart="true"/></td>
+                <td class="list__price" v-html="i.dPrice"></td>
             </tr>
         </table>
-        <div class="total">
+        <div class="total" v-if="itemList.length !== 0">
             <span class="total__text">{{ i18n.getLang("cart.total") }}</span>
+            <span class="total__price">{{ convertPrice(totalPrice) }}</span>
         </div>
+        <div class="submit">{{ i18n.getLang("cart.submit") }}</div>
     </div>
 
     <Footer/>
@@ -88,6 +110,11 @@ await fetchItems()
         width: 100%;
         border-collapse: collapse;
     }
+
+    .list tr {
+        border-bottom: 1px dashed gray;
+    }
+
 
     .list__img {
         width: 20%;
@@ -110,9 +137,44 @@ await fetchItems()
         text-decoration: underline;
     }
 
+    .list__count {
+        width: 20%;
+    }
+
+    .list__price {
+        width: 20%;
+        text-align: center;
+    }
+    .list__price::before {
+        content: '￥';
+    }
+    .list__price::after {
+        content: ' x1';
+        color: gray;
+    }
+
     .total {
         margin-top: 30px;
         font-weight: bold;
         font-size: 1.5em;
+    }
+
+    .total__price::before {
+        content: '￥'
+    }
+
+    .submit {
+        border: 2px solid black;
+        border-radius: 15px;
+        margin: 30px auto 0 auto;
+        cursor: pointer;   
+        padding: 10px 30px;
+        width: fit-content;
+        font-weight: bold;
+        transition: all .2s;
+    }
+    .submit:hover {
+        background: #000;
+        color: #fff;
     }
 </style>

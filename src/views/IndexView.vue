@@ -8,13 +8,16 @@ import Header from "../components/Header.vue";
 import Categorybar from "../components/Categorybar.vue";
 import ItemShowcase from "../components/ItemShowcase.vue";
 import Footer from "../components/Footer.vue"
+import { watch } from "vue";
 
-// Skin store
-const skin = stores.skin;
-const { title } = storeToRefs(skin);
+const skin = stores.skin
+const { sitename } = storeToRefs(skin)
 
-// Set title
-document.querySelector("title").innerHTML = title.value.index || "vMark";
+watch(sitename, ()=>{
+	document.querySelector("title").innerHTML = (sitename.value || "vMark")
+})
+document.querySelector("title").innerHTML = (sitename.value || "vMark")
+
 </script>
 
 <template>

@@ -49,7 +49,8 @@ await fetchCategory()
                 class="category__parent__item" 
                 :title="i.name"
             >
-                <RouterLink :to="i.url">{{ i.name }}</RouterLink>
+                <RouterLink :to="i.url" v-if="i.sub === undefined">{{ i.name }}</RouterLink>
+                <a v-if="i.sub">{{ i.name }}</a>
                 <!-- Sub category list -->
                 <div v-if="i.sub" class="category__sub">
                     <!-- Sub category item -->
@@ -88,6 +89,7 @@ await fetchCategory()
         padding: 15px 0;
         position: relative;
         min-width: 10%;
+        word-break: keep-all;
     }
 
     .category__parent__item {

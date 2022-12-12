@@ -6,6 +6,7 @@ import router from "./router/router";
 import { registerStore } from "./pinia";
 
 import "./assets/main.css";
+import axios from "axios";
 
 String.prototype.format = function() {
 	let str = this;
@@ -13,6 +14,8 @@ String.prototype.format = function() {
 		str = str.replace(new RegExp("\\{" + i + "\\}", "g"), arguments[i]);
 	return str;
 }
+
+axios.defaults.withCredentials = true
 
 const app = createApp(App)
 

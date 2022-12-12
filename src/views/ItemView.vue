@@ -11,8 +11,10 @@ import { computed } from '@vue/reactivity';
 import { cart } from "../modules/Cart"
 
 import stores from '../pinia';
+import { storeToRefs } from 'pinia';
 
 const i18n = stores.i18n
+const skin = stores.skin
 const user = stores.user
 
 const router = useRouter();
@@ -20,6 +22,8 @@ const route = useRoute();
 
 const info = ref({});
 const getImg = computed(()=>info.value.aid === undefined ? "/svg/item.svg" : (vMarkBackendAPI + "api/attachment/get?aid=" + info.value.aid));
+
+const { sitename } = storeToRefs(skin)
 
 const getPrice = computed(()=>{
     let price = info.value.price;
@@ -82,7 +86,8 @@ onMounted(async ()=>{
         return;
     }
     info.value = ret.data;
-});
+    document.querySelector("title").innerHTML = info.value.name + " | " + (sitename.value || "vMark")
+})
 </script>
 
 <template>

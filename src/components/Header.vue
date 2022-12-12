@@ -1,20 +1,21 @@
 <script setup>
 import { ref } from "vue";
 import { storeToRefs } from "pinia";
-import { useRouter } from "vue-router";
+import { useRoute, useRouter } from "vue-router";
 
 import stores from "../pinia";
 
+const route = useRoute()
 const router = useRouter();
 
 const i18n = stores.i18n;
 const skin = stores.skin;
 
-const { header } = storeToRefs(skin);
+const { headerMainStyle, headerTitleInnerHtml, headerTitleStyle } = storeToRefs(skin);
 
 const titleClick = ()=>router.push({name: "index"})
 
-const searchText = ref("");
+const searchText = ref(route.query.s || "");
 const searchClick = ()=>router.push({
     name: "search",
     query: {s: searchText.value}
@@ -26,12 +27,12 @@ const defaultInnerHtml = '<span style="color:red">v</span><span>Mark</span>';
 
 <template>
     <!-- Header -->
-    <div class="header" :style="header.mainStyle">
+    <div class="header" :style="headerMainStyle">
         <!-- Title -->
         <div 
-            v-html="header.titleInnerHtml || defaultInnerHtml"
+            v-html="headerTitleInnerHtml || defaultInnerHtml"
             class="header__title"
-            :style="header.titleStyle || defaultStyle" 
+            :style="headerTitleStyle || defaultStyle" 
             @click="titleClick"
         />
         <!-- Search box -->
@@ -57,7 +58,7 @@ const defaultInnerHtml = '<span style="color:red">v</span><span>Mark</span>';
         </div>
     </div>
     <!-- Divide bar -->
-    <div class="divbar" :style="header.divbarStyle"></div>
+    <div class="divbar"></div>
 </template>
 
 <style scoped>

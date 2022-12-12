@@ -40,6 +40,8 @@ const fetchItems = async (data)=>{
         alert(i18n.getLang(res.message))
         return
     }
+    if (res.data === undefined) 
+        return
 
     res.data.forEach((v, i, a)=>{
         a[i].url = '/item?iid=' + v.iid

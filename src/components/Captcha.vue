@@ -1,5 +1,5 @@
 <script setup>
-import { ref, computed, onMounted, defineExpose } from 'vue';
+import { ref, computed, onMounted } from 'vue';
 import { useI18NStore } from '../pinia/I18N';
 
 const i18n = useI18NStore();

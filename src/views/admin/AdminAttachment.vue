@@ -147,6 +147,7 @@ const rename = async (aid)=>{
         width: 40%;
         border-left: 1px dashed lightgray;
         border-right: 1px dashed lightgray;
+        word-break: break-all;
     }
     .att-list__info>div {
         margin: 5px 0;
