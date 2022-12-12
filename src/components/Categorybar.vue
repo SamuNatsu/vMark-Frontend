@@ -127,6 +127,7 @@ await fetchCategory()
         left: calc(100%);
         top: 0;
         white-space: nowrap;
+        z-index: 10;
     }
     .category__sub::-webkit-scrollbar {
         width: 5px;
