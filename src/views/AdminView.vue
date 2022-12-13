@@ -10,6 +10,7 @@ import Topbar from '../components/Topbar.vue';
 import Footer from "../components/Footer.vue";
 import AdminUser from "./admin/AdminUser.vue";
 import AdminAttachment from "./admin/AdminAttachment.vue"
+import AdminItem from "./admin/AdminItem.vue";
 
 // Router
 const route = useRoute();
@@ -26,7 +27,7 @@ const { title } = storeToRefs(skin);
 document.querySelector("title").innerHTML = title.value.admin || "vMark Admin Page";
 
 // Menu select
-const current = ref(route.query.m || 0);
+const current = ref(route.query.m || 1);
 const menuSelect = (next)=>{
     current.value = next;
     router.push({query: {m: next}});
@@ -42,10 +43,6 @@ const backSelect = ()=>router.push({name: "index"});
     <div class="admin__frame">
         <!-- Side menu bar -->
         <div class="admin__menu">
-            <div :class="{'admin__menu--current': current == 0}" @click="menuSelect(0)">
-                {{ i18n.getLang("admin.menu.dashboard") }}
-            </div>
-
             <div :class="{'admin__menu--current': current == 1}" @click="menuSelect(1)">
                 {{ i18n.getLang("admin.menu.user") }}
             </div>
@@ -83,10 +80,7 @@ const backSelect = ()=>router.push({name: "index"});
             <!-- User manage -->
             <AdminUser v-if="current == 1"/>
 
-            <div v-if="(current == 2)">
-                <h1>{{ i18n.getLang("admin.menu.item") }}</h1>
-                <hr/>
-            </div>
+            <AdminItem v-if="current == 2"/>
 
             <div v-if="(current == 3)">
                 <h1>{{ i18n.getLang("admin.menu.order") }}</h1>

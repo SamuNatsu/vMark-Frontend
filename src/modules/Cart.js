@@ -52,4 +52,6 @@ const set = (iid, data)=>{
     lStorage.set("cart", {data: c});
 }
 
-export const cart={add, del, get, set};
+const clear = ()=>lStorage.set("cart", {data: []})
+
+export const cart={add, del, get, set, clear};

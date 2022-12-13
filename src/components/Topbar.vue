@@ -39,7 +39,7 @@ const logout = ()=>{
 
 		<div v-if="user.isLogined" class="topbar__vr"></div>
 
-		<div v-if="user.isLogined" class="topbar__btn">
+		<div class="topbar__btn">
 			<RouterLink to="cart">{{ i18n.getLang("topbar.cart") }}</RouterLink>
 		</div>
 

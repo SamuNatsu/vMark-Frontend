@@ -1,22 +1,17 @@
 <script setup>
 import { ref } from 'vue';
 import axios from 'axios';
-import { useI18NStore } from '../../pinia/I18N';
-import { useUserStore } from '../../pinia/User';
 
 import Captcha from '../../components/Captcha.vue';
+import stores from '../../pinia';
 
-const i18n = useI18NStore();
-await i18n.init();
-
-const user = useUserStore();
-await user.init();
+const i18n = stores.i18n
+const user = stores.user
 
 const userSearchBox = ref("");
 const userCount = ref(0);
 const userList = ref([]);
 const userPage = ref(1);
-const jumpToPage = ref(1);
 const regAccount = ref("");
 const regPass = ref("");
 const regCaptcha = ref("");
@@ -159,20 +154,6 @@ const register = async ()=>{
     }
     alert(i18n.getLang("admin.main.user.message.register.success"));
     userRefresh();
-};
-
-const jumpPage = async ()=>{
-    userPage.value = jumpToPage.value;
-
-    userList.value = [];
-    userCount.value = 0;
-    let ret = (await axios.get(vMarkBackendAPI + "api/user/?s=" + userSearchBox.value + "&p=" + userPage.value)).data;
-    if (ret.status === "failed") {
-        alert(i18n.getLang(ret.message));
-        return;
-    }
-    userList.value = ret.data;
-    userCount.value = ret.data.length;
 };
 
 userRefresh();

@@ -42,9 +42,12 @@
 					}
 				}
 			},
-			"dashboard": {
-				"title": {
-					"statistic": "统计信息"
+			"item": {
+				"add": {
+					"title": "添加商品"
+				},
+				"list": {
+					"title": "商品列表"
 				}
 			},
 			"user": {
@@ -178,7 +181,8 @@
 	"cart": {
 		"total": "总价：",
 		"empty": "购物车里没有东西",
-		"submit": "下单"
+		"submit": "下单",
+		"success": "下单成功"
 	},
 	"title": {
 		"cart": "购物车"

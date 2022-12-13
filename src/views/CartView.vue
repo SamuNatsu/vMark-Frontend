@@ -9,14 +9,18 @@ import { ref, watch, computed } from 'vue';
 import axios from 'axios';
 import stores from '../pinia';
 import { storeToRefs } from 'pinia';
+import { useRouter } from 'vue-router';
 
 const i18n = stores.i18n
 const skin = stores.skin
+const user = stores.user
 const { lang } = storeToRefs(i18n)
 const { sitename } = storeToRefs(skin)
 
 watch(lang, ()=>document.querySelector("title").innerHTML = i18n.getLang("title.cart") + " | " + (sitename.value || "vMark"))
 document.querySelector("title").innerHTML = i18n.getLang("title.cart") + " | " + (sitename.value || "vMark")
+
+const router = useRouter()
 
 const itemList = ref([])
 const totalPrice = computed(()=>{
@@ -68,6 +72,34 @@ const fetchItems = async ()=>{
         itemList.value.push(ti)
     })
 }
+
+const submit = async ()=>{
+    if (!user.isLogined) {
+        alert(i18n.getLang("message.auth.no_login"))
+        return
+    }
+    let tmp = []
+    itemList.value.forEach((v)=>{
+        tmp.push({
+            iid: v.iid,
+            price: v.sale || v.price,
+            count: v.count
+        })
+    })
+    let str = JSON.stringify(tmp)
+    let res = (await axios.post(
+        vMarkBackendAPI + "api/order/add",
+        {uid: user.getUid, order: str},
+        {headers: {"Content-Type": "application/x-www-form-urlencoded"}})).data
+    if (res.status === "failed")
+        alert(i18n.getLang(res.message))
+    else {
+        alert(i18n.getLang("cart.success"))
+        router.push({name: "user"});
+        cart.clear()
+    }
+}
+
 await fetchItems()
 
 </script>
@@ -90,7 +122,7 @@ await fetchItems()
             <span class="total__text">{{ i18n.getLang("cart.total") }}</span>
             <span class="total__price">{{ convertPrice(totalPrice) }}</span>
         </div>
-        <div class="submit">{{ i18n.getLang("cart.submit") }}</div>
+        <div class="submit" v-if="itemList.length !== 0" @click="submit">{{ i18n.getLang("cart.submit") }}</div>
     </div>
 
     <Footer/>
