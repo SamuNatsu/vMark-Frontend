@@ -17,10 +17,10 @@ const i18n = stores.i18n;
 const skin = stores.skin;
 const user = stores.user;
 
-const { title } = storeToRefs(skin);
+const { sitename } = storeToRefs(skin);
 
 // Set title
-document.querySelector("title").innerHTML = (title.value.login || "Login - vMark");
+document.querySelector("title").innerHTML = (sitename.value || "vMark")
 
 // Warning
 const message = ref("");

@@ -73,6 +73,7 @@ const fetchItems = async ()=>{
     })
 }
 
+const address = ref("")
 const submit = async ()=>{
     if (!user.isLogined) {
         alert(i18n.getLang("message.auth.no_login"))
@@ -89,7 +90,7 @@ const submit = async ()=>{
     let str = JSON.stringify(tmp)
     let res = (await axios.post(
         vMarkBackendAPI + "api/order/add",
-        {uid: user.getUid, order: str},
+        {uid: user.getUid, order: str, address: address.value},
         {headers: {"Content-Type": "application/x-www-form-urlencoded"}})).data
     if (res.status === "failed")
         alert(i18n.getLang(res.message))
@@ -122,6 +123,7 @@ await fetchItems()
             <span class="total__text">{{ i18n.getLang("cart.total") }}</span>
             <span class="total__price">{{ convertPrice(totalPrice) }}</span>
         </div>
+        <div v-if="itemList.length !== 0" style="margin:20px 0"><b>{{ i18n.getLang("cart.address") }}</b>&emsp;<input type="text" v-model="address"/></div>
         <div class="submit" v-if="itemList.length !== 0" @click="submit">{{ i18n.getLang("cart.submit") }}</div>
     </div>
 

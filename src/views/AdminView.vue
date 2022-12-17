@@ -1,6 +1,5 @@
 <script setup>
-import { ref, computed } from "vue";
-import { storeToRefs } from "pinia";
+import { ref } from "vue";
 import { useRoute, useRouter } from "vue-router";
 
 import stores from "../pinia";
@@ -11,6 +10,8 @@ import Footer from "../components/Footer.vue";
 import AdminUser from "./admin/AdminUser.vue";
 import AdminAttachment from "./admin/AdminAttachment.vue"
 import AdminItem from "./admin/AdminItem.vue";
+import AdminOption from "./admin/AdminOption.vue";
+import AdminOrder from "./admin/AdminOrder.vue";
 
 // Router
 const route = useRoute();
@@ -19,12 +20,8 @@ const router = useRouter();
 // I18N store
 const i18n = stores.i18n;
 
-// Skin store
-const skin = stores.skin;
-const { title } = storeToRefs(skin);
-
 // Set title
-document.querySelector("title").innerHTML = title.value.admin || "vMark Admin Page";
+document.querySelector("title").innerHTML = "vMark Admin Page";
 
 // Menu select
 const current = ref(route.query.m || 1);
@@ -70,30 +67,17 @@ const backSelect = ()=>router.push({name: "index"});
 
         <!-- Main frame -->
         <div class="admin__main">
-            <!-- Dashboard -->
-            <div v-if="current == 0">
-                <h1>{{ i18n.getLang("admin.menu.dashboard") }}</h1>
-                <hr/>
-                <h2>{{ i18n.getLang("admin.main.dashboard.title.statistic") }}</h2>
-            </div>
-
             <!-- User manage -->
             <AdminUser v-if="current == 1"/>
 
             <AdminItem v-if="current == 2"/>
 
-            <div v-if="(current == 3)">
-                <h1>{{ i18n.getLang("admin.menu.order") }}</h1>
-                <hr/>
-            </div>
+            <AdminOrder v-if="(current == 3)"/>
 
             <!-- Attachment manage -->
             <AdminAttachment v-if="current == 4"/>
 
-            <div v-if="(current == 5)">
-                <h1>{{ i18n.getLang("admin.menu.option") }}</h1>
-                <hr/>
-            </div>
+            <AdminOption v-if="current == 5"/>
         </div>
     </div>
 

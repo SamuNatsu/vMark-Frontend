@@ -7,7 +7,7 @@ import { useSkinStore } from "../pinia/Skin";
 // Skin store
 const skin = useSkinStore();
 await skin.init();
-const { title } = storeToRefs(skin);
+const { sitename } = storeToRefs(skin);
 
 // Static data
 const year = new Date().getFullYear();
@@ -15,7 +15,7 @@ const year = new Date().getFullYear();
 
 <template>
     <div class="footer">
-        <div>Copyright © {{ year }} {{ title.index || "vMark" }}</div>
+        <div>Copyright © {{ year }} {{ sitename || "vMark" }}</div>
     </div>
 </template>
 

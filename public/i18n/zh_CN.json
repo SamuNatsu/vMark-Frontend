@@ -148,10 +148,26 @@
 		"submit": "注册账号",
 		"success": "注册成功"
 	},
+	"category": {
+		"cid": "分类ID",
+		"name": "分类名",
+		"parent": "父级分类"
+	},
 	"item": {
 		"add_cart": "添加至购物车",
 		"cart_added": "已添加至购物车",
-		"not_found": "未找到物品"
+		"not_found": "未找到物品",
+		"iid": "商品ID",
+		"name": "商品名",
+		"desc": "商品描述",
+		"cid": "分类ID",
+		"price": "标价",
+		"sale": "折扣价",
+		"aid": "附件ID",
+		"remain": "库存",
+		"op": "操作",
+		"edit": "编辑",
+		"save": "保存修改"
 	},
 	"message": {
 		"auth": {
@@ -182,9 +198,27 @@
 		"total": "总价：",
 		"empty": "购物车里没有东西",
 		"submit": "下单",
+		"address": "收件地址",
 		"success": "下单成功"
 	},
 	"title": {
 		"cart": "购物车"
+	},
+	"option": {
+		"sitename": "站点名称",
+		"header_main_style": "Header CSS 样式",
+		"header_title_inner_html": "Header 标题 HTML",
+		"header_title_style": "Header 标题 CSS 样式",
+		"background": "背景图片 URL",
+		"submit": "更新",
+		"success": "更新成功"
+	},
+	"order": {
+		"search": "搜索用户",
+		"date": "日期",
+		"oid": "订单号",
+		"list": "订单商品列表",
+		"price": "订单总额",
+		"address": "收件地址"
 	}
 }
