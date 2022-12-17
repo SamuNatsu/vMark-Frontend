@@ -48,6 +48,9 @@
 				},
 				"list": {
 					"title": "商品列表"
+				},
+				"cate": {
+					"title": "分类列表"
 				}
 			},
 			"user": {
@@ -151,7 +154,10 @@
 	"category": {
 		"cid": "分类ID",
 		"name": "分类名",
-		"parent": "父级分类"
+		"parent": "父级分类",
+		"rename": "重命名",
+		"reparent": "设置父级",
+		"add": "添加分类"
 	},
 	"item": {
 		"add_cart": "添加至购物车",
@@ -167,7 +173,9 @@
 		"remain": "库存",
 		"op": "操作",
 		"edit": "编辑",
-		"save": "保存修改"
+		"save": "保存修改",
+		"delete": "删除商品",
+		"add": "添加商品"
 	},
 	"message": {
 		"auth": {
@@ -220,5 +228,12 @@
 		"list": "订单商品列表",
 		"price": "订单总额",
 		"address": "收件地址"
+	},
+	"center": {
+		"account": "账号",
+		"name": "昵称",
+		"repass": "修改密码",
+		"modify": "修改",
+		"order": "订单列表"
 	}
 }

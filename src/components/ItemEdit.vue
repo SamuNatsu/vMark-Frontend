@@ -39,6 +39,21 @@ const save = async ()=>{
 
     props.done()
 }
+const del = async ()=>{
+    let res = (await axios.post(
+        vMarkBackendAPI + "api/item/delete",
+        {iid: props.info.iid},
+        {headers: {"Content-Type": "application/x-www-form-urlencoded"}}
+    )).data
+    if (res.status === "failed") {
+        alert(i18n.getLang(res.message))
+        return
+    }
+
+    alert("Success")
+
+    props.done()
+}
 
 onMounted(()=>{
     name.value = props.info.name ?? ""
@@ -85,10 +100,10 @@ onMounted(()=>{
                     <td><input type="text" v-model="remain"/></td>
                 </tr>
             </table>
-            <div v-if="props.type == 'edit'">
+            <div v-if="props.type == 'edit'" style="display: flex;margin: 20px 0">
                 <div class="btn" @click="save()">{{ i18n.getLang("item.save") }}</div>
+                <div class="btn" @click="del()">{{ i18n.getLang("item.delete") }}</div>
             </div>
-            <div v-if="props.type == 'new'"></div>
         </div>
     </div>
 </template>
