@@ -8,7 +8,6 @@
 	},
 	"admin": {
 		"menu": {
-			"dashboard": "仪表盘",
 			"user": "用户管理",
 			"item": "商品管理",
 			"order": "订单管理",
@@ -67,10 +66,7 @@
 					"reset_password": "重置密码",
 					"permit": "设置权限",
 					"delete": "删除用户",
-					"total": "共有 {0} 条记录",
-					"jump": "到",
-					"page": "页",
-					"to": "跳转"
+					"total": "共有 {0} 条记录"
 				},
 				"register": {
 					"title": "注册新用户",
@@ -122,10 +118,6 @@
 			"input": "搜点什么",
 			"button": "搜索"
 		}
-	},
-	"pageNav": {
-		"last": "上一页",
-		"next": "下一页"
 	},
 	"login": {
 		"title": "用户登录",

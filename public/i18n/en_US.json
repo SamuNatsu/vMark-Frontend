@@ -1,37 +1,231 @@
 {
+	"captcha": {
+		"alt": "Captcha",
+		"refresh": "Click to refresh"
+	},
+	"item_select": {
+		"text": "Max {0}"
+	},
+	"admin": {
+		"menu": {
+			"user": "User Manage",
+			"item": "Item Manage",
+			"order": "Order Manage",
+			"attachment": "Attachment Manage",
+			"option": "Site option",
+			"back": "Back to index"
+		},
+		"main": {
+			"attachment": {
+				"upload": {
+					"title": "Upload attachment",
+					"btn": "Upload (PNG image only, less than 15MB)"
+				},
+				"list": {
+					"title": "Attachment list",
+					"refresh": "Refresh",
+					"thumbnail": "Thumbnail",
+					"info": "Info",
+					"op": "Operation",
+					"name": "Name",
+					"path": "Local path",
+					"delete": {
+						"title": "Delete",
+						"confirm": "Sure to delete attachment? (aid: {0})",
+						"success": "Success"
+					},
+					"rename": {
+						"title": "Modify name",
+						"prompt": "Input new name",
+						"success": "Success"
+					}
+				}
+			},
+			"item": {
+				"add": {
+					"title": "Add item"
+				},
+				"list": {
+					"title": "Item list"
+				},
+				"cate": {
+					"title": "Category list"
+				}
+			},
+			"user": {
+				"list": {
+					"title": "User list",
+					"refresh": "Refresh",
+					"search_box": "Account or name",
+					"search": "Search",
+					"account": "Account",
+					"name": "Name",
+					"default_name": "(NULL)",
+					"op": "Operation",
+					"rename": "Rename",
+					"reset_password": "Reset password",
+					"permit": "Set privilege",
+					"delete": "Delete user",
+					"total": "Total {0}"
+				},
+				"register": {
+					"title": "Register",
+					"account": "Account",
+					"password": "Password",
+					"captcha": "Captcha",
+					"submit": "Submit",
+					"refresh": "Click to refresh"
+				},
+				"message": {
+					"search": {
+						"empty": "Search something"
+					},
+					"rename": {
+						"prompt": "New name (Length less than 30)",
+						"success": "Success"
+					},
+					"reset_password": {
+						"confirm": "Sure to reset password to 123456 for user? (uid: {0})",
+						"success": "Success"
+					},
+					"set_privilege": {
+						"prompt": "Set user(uid: {0}) privilege to: \n(0: User, 1: Admin)",
+						"invalid": "Invalid privilege",
+						"success": "Success"
+					},
+					"delete": {
+						"confirm": "Sure to delete user? (uid: {0})",
+						"success": "Success"
+					},
+					"register": {
+						"success": "Account duplicated"
+					}
+				}
+			}
+		}
+	},
 	"topbar": {
-		"welcome": "Welcome back, {0}",
-		"center": "User center",
-		"admin": "Admin center",
+		"welcome": "Welcom, {0}",
+		"cart": "Cart",
+		"center": "Center",
+		"admin": "Admin",
+		"logout": "Logout",
 		"login": "Login",
 		"register": "Register"
 	},
 	"header": {
 		"searchbox": {
-			"input": "Discover something",
+			"input": "Search something",
 			"button": "Search"
 		}
 	},
-	"pageNav": {
-		"last": "Previous Page",
-		"next": "Next Page"
-	},
 	"login": {
-		"title": "User Login",
+		"title": "User login",
 		"account": "Account",
 		"password": "Password",
-		"submit": "Log in"
+		"submit": "Submit",
+		"captcha": "Captcha",
+		"refresh": "Click to refresh"
 	},
 	"register": {
-		"title": "User Register",
+		"title": "Register",
 		"account": {
 			"title": "Account",
-			"desc": "Uppercase/lowercase letters, digits or underlines, length greater than 6"
+			"desc": "Contains uppercate/lowercase alphas, digits and underline, 6 <= length <= 30"
 		},
 		"password": {
 			"title": "Password",
-			"desc": "Uppercase/lowercase letters, digits or special characters, length greater than 6"
+			"desc": "Contains uppercate/lowercase alphas, digits and underline, length >= 6"
 		},
-		"submit": "Register"
+		"captcha": {
+			"title": "Captcha"
+		},
+		"submit": "Submit",
+		"success": "Success"
+	},
+	"category": {
+		"cid": "Category ID",
+		"name": "Name",
+		"parent": "Parent cid",
+		"rename": "Rename",
+		"reparent": "Set parent",
+		"add": "Add category"
+	},
+	"item": {
+		"add_cart": "Add to cart",
+		"cart_added": "Done",
+		"not_found": "Item not found",
+		"iid": "Item ID",
+		"name": "Name",
+		"desc": "Description",
+		"cid": "Category ID",
+		"price": "Price",
+		"sale": "Sale",
+		"aid": "Attachemnt ID",
+		"remain": "Remains",
+		"op": "Operation",
+		"edit": "Edit",
+		"save": "Save",
+		"delete": "Delete",
+		"add": "Add item"
+	},
+	"message": {
+		"auth": {
+			"already_login": "Already logined",
+			"no_login": "Please login"
+		},
+		"captcha": {
+			"timeout": "Catpcha timeout, please click to refresh",
+			"wrong": "Catpcha wrong"
+		},
+		"item": {
+			"sold_out": "Sold out"
+		},
+		"invalid": {
+			"account": "Invalid account",
+			"password": "Invalid password",
+			"captcha": "Invalid captcha",
+			"uid": "Invalid uid",
+			"new_name": "Invalid new name"
+		},
+		"fail": {
+			"account_duplicated": "Account duplicated",
+			"login": "Login failed",
+			"permission": "Permission denied"
+		}
+	},
+	"cart": {
+		"total": "Total: ",
+		"empty": "Cart empty",
+		"submit": "Submit",
+		"address": "Address",
+		"success": "Success"
+	},
+	"title": {
+		"cart": "Cart"
+	},
+	"option": {
+		"sitename": "Site name",
+		"header_main_style": "Header CSS Style",
+		"header_title_inner_html": "Header Title HTML",
+		"header_title_style": "Header Title CSS Style",
+		"background": "Background URL",
+		"submit": "Update",
+		"success": "Success"
+	},
+	"order": {
+		"search": "Search",
+		"date": "Date",
+		"oid": "Order ID",
+		"list": "Order item list",
+		"price": "Total",
+		"address": "Address"
+	},
+	"center": {
+		"account": "Account",
+		"name": "Name",
+		"repass": "Modify password",
+		"modify": "Modify",
+		"order": "Order list"
 	}
 }
